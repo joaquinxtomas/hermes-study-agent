@@ -1,0 +1,8 @@
+storage/study.db
+config/study.yaml
+.env
+auth.json
+credentials.json
+tokens.json
+__pycache__/
+*.pyc
