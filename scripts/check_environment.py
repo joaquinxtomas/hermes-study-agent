@@ -31,6 +31,11 @@ def main() -> None:
     else:
         print("[INFO] Hermes not installed")
 
+    if shutil.which("pdftotext"):
+        print("[OK] PDF text extraction (pdftotext)")
+    else:
+        print("[INFO] pdftotext not installed; PDF ingestion unavailable")
+
 
 if __name__ == "__main__":
     main()

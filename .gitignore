@@ -1,5 +1,8 @@
 storage/study.db
 config/study.yaml
+materials/*
+!materials/README.md
+diagrams/generated/*
 .env
 auth.json
 credentials.json

@@ -21,11 +21,30 @@ def initialize_database(database_path: Path | None = None) -> None:
     database_path.parent.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(database_path) as connection:
         connection.execute("PRAGMA foreign_keys = ON")
+        current_version = connection.execute("PRAGMA user_version").fetchone()[0]
         for migration in migrations:
-            print(f"Aplicando migración: {migration.name}")
-            connection.executescript(migration.read_text(encoding="utf-8"))
+            try:
+                version = int(migration.name.split("_", 1)[0])
+            except ValueError as error:
+                raise RuntimeError(f"Nombre de migración inválido: {migration.name}") from error
+            if version <= current_version:
+                continue
+            if version != current_version + 1:
+                raise RuntimeError(f"Falta la migración {current_version + 1:03d} antes de {migration.name}")
 
-    print(f"Base de datos inicializada en: {database_path}")
+            print(f"Aplicando migración: {migration.name}")
+            sql = migration.read_text(encoding="utf-8")
+            try:
+                connection.executescript(
+                    f"BEGIN IMMEDIATE;\n{sql}\n"
+                    f"PRAGMA user_version = {version};\nCOMMIT;"
+                )
+            except sqlite3.Error:
+                connection.rollback()
+                raise
+            current_version = version
+
+    print(f"Base de datos inicializada en: {database_path} (schema {current_version})")
 
 
 if __name__ == "__main__":
