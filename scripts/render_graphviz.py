@@ -40,3 +40,4 @@ def render(request, path):
             subprocess.run([dot, "-Tpng", str(path), "-o", str(path.with_suffix(".png"))], check=True, timeout=30, capture_output=True)
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
             raise RuntimeError(f"Graphviz no pudo generar PNG: {error} (source disponible en {path}).") from error
+        return path.with_suffix(".png")

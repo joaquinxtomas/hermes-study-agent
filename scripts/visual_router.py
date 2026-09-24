@@ -9,6 +9,7 @@ import sys
 import render_graphviz
 import render_mermaid
 import render_plot
+import render_artifact
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "diagrams" / "generated"
@@ -33,7 +34,10 @@ class VisualRequest:
     output_format: str = "source"
     subject: str | None = None
     topic: str | None = None
-    source: str | None = None
+    source: str | dict | None = None
+    subtitle: str | None = None
+    description: str | None = None
+    notes: list | None = None
 
     @classmethod
     def from_dict(cls, value: dict) -> "VisualRequest":
@@ -59,13 +63,22 @@ class VisualRequest:
             type=kind, title=title.strip(), data=data, output_format=output_format,
             subject=_optional_text(value.get("subject"), "subject"),
             topic=_optional_text(value.get("topic"), "topic"),
-            source=_optional_text(value.get("source"), "source"),
+            source=value.get("source"),
+            subtitle=_optional_text(value.get("subtitle"), "subtitle"),
+            description=_optional_text(value.get("description"), "description"),
+            notes=_optional_notes(value.get("notes")),
         )
 
 
 def _optional_text(value, name):
     if value is not None and (not isinstance(value, str) or len(value) > 500):
         raise ValueError(f"{name} debe ser texto de hasta 500 caracteres.")
+    return value
+
+
+def _optional_notes(value):
+    if value is not None and (not isinstance(value, list) or any(not isinstance(item, str) or len(item) > 1000 for item in value)):
+        raise ValueError("notes debe ser una lista de textos de hasta 1000 caracteres.")
     return value
 
 
@@ -93,10 +106,35 @@ def render_request(request: VisualRequest) -> dict:
         path = OUTPUT_DIR / f"{slug}-{index}{renderer.extension}"
         index += 1
     extra_artifact = renderer.render(request, path)
-    artifacts = [str(path.relative_to(ROOT))]
+    artifacts = [path.relative_to(ROOT).as_posix()]
     if extra_artifact is not None:
-        artifacts.append(str(extra_artifact.relative_to(ROOT)))
-    return {"type": request.type, "title": request.title, "artifact": artifacts[0], "artifacts": artifacts}
+        artifacts.append(extra_artifact.relative_to(ROOT).as_posix())
+    result = {"type": request.type, "title": request.title, "artifact": artifacts[0], "artifacts": artifacts}
+    visual_path = next((item for item in artifacts if item.endswith((".svg", ".png"))), None)
+    if extra_artifact is not None and str(extra_artifact.relative_to(ROOT)).replace("\\", "/") not in artifacts:
+        visual_path = str(extra_artifact.relative_to(ROOT)).replace("\\", "/")
+        artifacts.append(visual_path)
+    if visual_path:
+        presentation_path = path.with_name(path.stem + "-artifact.html")
+        index = 2
+        while presentation_path.exists():
+            presentation_path = path.with_name(f"{path.stem}-artifact-{index}.html")
+            index += 1
+        presentation = render_artifact.render_artifact({
+            "title": request.title,
+            "source": request.source,
+            "subject": request.subject,
+            "topic": request.topic,
+            "subtitle": request.subtitle,
+            "description": request.description,
+            "notes": request.notes or [],
+            "visuals": [{"kind": Path(visual_path).suffix[1:], "path": Path(visual_path).name}],
+        }, presentation_path)
+        result["technical_asset"] = visual_path
+        presentation_path = presentation_path.relative_to(ROOT).as_posix()
+        result["presentation_artifact"] = presentation_path
+        result["artifacts"].append(presentation_path)
+    return result
 
 
 def main() -> int:

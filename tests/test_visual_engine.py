@@ -68,7 +68,10 @@ class VisualEngineTests(unittest.TestCase):
 
             self.assertEqual(result["artifacts"], [
                 "generated/prueba-visual.mmd", "generated/prueba-visual.svg",
+                "generated/prueba-visual-artifact.html",
             ])
+            self.assertEqual(result["technical_asset"], "generated/prueba-visual.svg")
+            self.assertEqual(result["presentation_artifact"], "generated/prueba-visual-artifact.html")
             self.assertTrue((output_dir / "prueba-visual.svg").exists())
             run.assert_called_once()
 

@@ -148,3 +148,10 @@ omite si `pdftotext` no está instalado. Los tests visuales no necesitan
 herramientas externas; el caso de PNG verifica el error claro cuando Matplotlib
 no está instalado. Los demás tests usan bases SQLite temporales y no dependen de
 materiales personales.
+
+### Artifact de presentación
+
+Cuando existe un SVG o PNG renderizado, `scripts/render_artifact.py` lo envuelve en un HTML standalone (`*-artifact.html`) en `diagrams/generated/`. El HTML incluye SVG inline o PNG embebido, junto con el título y cualquier subtitle, description, notes y source metadata recibidos. Abrilo directamente en un navegador; no requiere servidor ni conexión. Mermaid/DOT sin imagen no se presentan. El asset técnico se conserva aparte.
+
+El plan, el estado de verificación y el próximo paso de esta fase están en
+[docs/visual-presentation-layer-v1.md](docs/visual-presentation-layer-v1.md).
