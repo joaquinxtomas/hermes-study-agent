@@ -9,3 +9,4 @@ credentials.json
 tokens.json
 __pycache__/
 *.pyc
+.venv/

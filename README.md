@@ -113,7 +113,10 @@ Cuando un diagrama o gráfico mejora la explicación, la skill `visual-explain`
 envía una Visual Request JSON al router determinístico. Las skills describen los
 datos y no dependen de formatos de renderer:
 
-- `process`, `architecture`, `sequence` → fuente Mermaid `.mmd`;
+- `flow`, `process`, `architecture`, `pipeline` → Native Visual Artifact Engine:
+  layout DAG determinístico, nodos HTML reales y conectores SVG responsive.
+  El spec expresa significado, nunca coordenadas; Mermaid queda como export/fallback.
+- `sequence` → fuente Mermaid `.mmd`;
 - `tree`, `graph`, `dag` → fuente Graphviz `.dot`;
 - `function`, `numeric_data`, `study_metrics` → imagen PNG con Matplotlib.
 
@@ -121,12 +124,16 @@ Los artifacts se guardan en `diagrams/generated/` y los nombres repetidos
 reciben un sufijo, sin sobrescribir los anteriores. Para producir source:
 
 ```bash
-printf '%s\n' '{"type":"process","title":"Consulta","data":{"nodes":[{"id":"A","label":"Usuario"},{"id":"B","label":"Hermes"}],"edges":[{"from":"A","to":"B"}]}}' \
+printf '%s\n' '{"type":"flow","title":"Consulta","data":{"nodes":[{"id":"A","title":"Usuario","role":"input"},{"id":"B","title":"Hermes","role":"agent"}],"edges":[{"from":"A","to":"B","label":"pregunta"}]}}' \
   | python3 scripts/visual_router.py
 ```
 
-Mermaid CLI (`mmdc`) intenta generar automáticamente un SVG adicional al `.mmd`
-cuando está instalado; si falla, conserva la fuente y muestra una advertencia.
+Ejemplos completos: `docs/source-engine.visual.json` y
+`docs/hermes-architecture.visual.json`. Abrí el `presentation_artifact`
+devuelto directamente en Firefox. Mermaid CLI (`mmdc`) puede crear un SVG de
+exportación si se solicita; si falla, conserva la fuente. El renderer nativo
+funciona offline y usa JavaScript vanilla solo para alinear conectores y
+resaltar relaciones enfocadas.
 Graphviz (`dot`) permite PNG. Ambos son opcionales y no están incluidos. Los
 gráficos requieren Matplotlib; si no
 está instalado, el comando informa cómo habilitarlo. No se ejecutan expresiones
@@ -149,9 +156,8 @@ herramientas externas; el caso de PNG verifica el error claro cuando Matplotlib
 no está instalado. Los demás tests usan bases SQLite temporales y no dependen de
 materiales personales.
 
-### Artifact de presentación
-
-Cuando existe un SVG o PNG renderizado, `scripts/render_artifact.py` lo envuelve en un HTML standalone (`*-artifact.html`) en `diagrams/generated/`. El HTML incluye SVG inline o PNG embebido, junto con el título y cualquier subtitle, description, notes y source metadata recibidos. Abrilo directamente en un navegador; no requiere servidor ni conexión. Mermaid/DOT sin imagen no se presentan. El asset técnico se conserva aparte.
-
-El plan, el estado de verificación y el próximo paso de esta fase están en
-[docs/visual-presentation-layer-v1.md](docs/visual-presentation-layer-v1.md).
+El renderer nativo V1 cubre flows, procesos, pipelines y arquitecturas simples
+acíclicas; árboles/grafos generales, charts y diagramas físicos quedan fuera de
+este alcance. Los demás renderers y el presenter anterior siguen disponibles
+para exportación, fallback y compatibilidad. Detalles, schema y prueba manual:
+[Native Visual Artifact Engine V1](docs/native-visual-artifacts.md).

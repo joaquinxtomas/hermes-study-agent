@@ -38,7 +38,7 @@ def _nodes_edges(data):
     return lines
 
 
-def render(request, path):
+def render(request, path, render_svg=True):
     if request.type == "sequence":
         participants, messages = request.data.get("participants"), request.data.get("messages")
         if not isinstance(participants, list) or not participants or not isinstance(messages, list):
@@ -68,7 +68,7 @@ def render(request, path):
             raise ValueError("direction debe ser LR, RL, TB o BT.")
         body = "\n".join([f"flowchart {direction}", *_nodes_edges(request.data)]) + "\n"
     path.write_text(body, encoding="utf-8")
-    mmdc = has_mmdc()
+    mmdc = has_mmdc() if render_svg else None
     if mmdc:
         output = path.with_suffix(".svg")
         try:

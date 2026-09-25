@@ -10,12 +10,16 @@ import render_graphviz
 import render_mermaid
 import render_plot
 import render_artifact
+import render_native_artifact
+from native_visual_spec import SemanticVisualSpec
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "diagrams" / "generated"
 RENDERERS = {
-    "process": render_mermaid,
-    "architecture": render_mermaid,
+    "flow": render_native_artifact,
+    "process": render_native_artifact,
+    "architecture": render_native_artifact,
+    "pipeline": render_native_artifact,
     "sequence": render_mermaid,
     "tree": render_graphviz,
     "graph": render_graphviz,
@@ -51,14 +55,21 @@ class VisualRequest:
         if not isinstance(data, dict) or len(json.dumps(data, ensure_ascii=False)) > 200_000:
             raise ValueError("data debe ser un objeto JSON de hasta 200 KB.")
         output_format = value.get("output_format", "png" if kind in {"function", "numeric_data", "study_metrics"} else "source")
-        if not isinstance(output_format, str) or output_format not in {"source", "svg", "png"}:
-            raise ValueError("output_format debe ser source, svg o png.")
-        if kind in {"process", "architecture", "sequence"} and output_format not in {"source", "svg"}:
+        if not isinstance(output_format, str) or output_format not in {"source", "svg", "png", "html"}:
+            raise ValueError("output_format debe ser source, svg, png o html.")
+        if kind in {"flow", "process", "architecture", "pipeline"} and output_format not in {"source", "svg", "html"}:
+            raise ValueError("El renderer nativo admite html; source/svg quedan disponibles para exportación Mermaid.")
+        if kind == "sequence" and output_format not in {"source", "svg"}:
             raise ValueError("Mermaid admite output_format source o svg.")
         if kind in {"tree", "graph", "dag"} and output_format not in {"source", "png"}:
             raise ValueError("Graphviz admite output_format source o png.")
         if kind in {"function", "numeric_data", "study_metrics"} and output_format != "png":
             raise ValueError("Matplotlib admite output_format png.")
+        if kind in {"flow", "process", "architecture", "pipeline"}:
+            data = {**data, "type": kind, "title": title.strip()}
+            for node in data.get("nodes", []) if isinstance(data.get("nodes"), list) else []:
+                if isinstance(node, dict) and "title" not in node:
+                    node["title"] = node.get("label") or node.get("id")
         return cls(
             type=kind, title=title.strip(), data=data, output_format=output_format,
             subject=_optional_text(value.get("subject"), "subject"),
@@ -101,10 +112,32 @@ def render_request(request: VisualRequest) -> dict:
     path = OUTPUT_DIR / f"{slug}{renderer.extension}"
     # Avoid replacing a prior artifact when two requests share a title.
     index = 2
-    while (path.exists() or (renderer is render_mermaid and render_mermaid.has_mmdc()
-                             and path.with_suffix(".svg").exists())):
+    while (path.exists()
+           or (renderer is render_native_artifact and any(path.with_suffix(ext).exists() for ext in (".mmd", ".svg")))
+           or (renderer is render_mermaid and render_mermaid.has_mmdc() and path.with_suffix(".svg").exists())):
         path = OUTPUT_DIR / f"{slug}-{index}{renderer.extension}"
         index += 1
+    if renderer is render_native_artifact:
+        semantic = SemanticVisualSpec.from_dict({**request.data,
+            "type": request.type, "title": request.title,
+            "subtitle": request.subtitle or request.data.get("subtitle"),
+            "description": request.description or request.data.get("description"),
+            "notes": request.notes if request.notes is not None else request.data.get("notes"),
+            "source": request.source if request.source is not None else request.data.get("source")})
+        renderer.render(semantic, path, OUTPUT_DIR)
+        artifacts = [path.relative_to(ROOT).as_posix()]
+        result = {"type": request.type, "title": request.title, "artifact": artifacts[0], "artifacts": artifacts,
+                  "presentation_artifact": artifacts[0], "renderer": "native"}
+        if request.output_format in {"source", "svg"}:
+            export = path.with_suffix(".mmd")
+            render_mermaid.render(request, export, render_svg=request.output_format == "svg")
+            export_rel = export.relative_to(ROOT).as_posix()
+            artifacts.append(export_rel)
+            result["technical_asset"] = export_rel
+            if request.output_format == "svg" and export.with_suffix(".svg").exists():
+                artifacts.append(export.with_suffix(".svg").relative_to(ROOT).as_posix())
+                result["technical_asset"] = artifacts[-1]
+        return result
     extra_artifact = renderer.render(request, path)
     artifacts = [path.relative_to(ROOT).as_posix()]
     if extra_artifact is not None:

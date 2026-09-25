@@ -1,0 +1,27 @@
+{
+  "type": "flow",
+  "title": "Source Engine",
+  "subtitle": "De material original a una respuesta con páginas citadas",
+  "description": "Los archivos permanecen en materials/; SQLite conserva metadatos y texto extraído por página.",
+  "notes": [
+    "La búsqueda recupera fragmentos locales y la respuesta conserva la referencia de página.",
+    "El HTML muestra la composición nativa; Mermaid se guarda como export técnico."
+  ],
+  "data": {
+    "nodes": [
+      {"id": "pdf", "title": "PDF original", "subtitle": "materials/", "role": "input", "description": "Archivo académico inmutable."},
+      {"id": "register", "title": "Registro", "subtitle": "source_cli", "role": "tool", "description": "Asocia fuente, materia y ruta local."},
+      {"id": "extract", "title": "Extracción", "subtitle": "pdftotext", "role": "process", "description": "Extrae texto y mantiene el número de página."},
+      {"id": "store", "title": "SQLite", "subtitle": "sources + source_pages", "role": "storage", "description": "Guarda metadatos y texto por página."},
+      {"id": "search", "title": "Búsqueda", "subtitle": "source_search", "role": "tool", "description": "Recupera páginas y fragmentos relevantes."},
+      {"id": "grounded", "title": "Respuesta grounded", "subtitle": "página + fragmento", "role": "output", "description": "Hermes explica apoyándose en la evidencia recuperada."}
+    ],
+    "edges": [
+      {"from": "pdf", "to": "register", "label": "registrar archivo", "style": "normal"},
+      {"from": "register", "to": "extract", "label": "ingestar", "style": "normal"},
+      {"from": "extract", "to": "store", "label": "guardar por página", "style": "emphasis"},
+      {"from": "store", "to": "search", "label": "consultar localmente", "style": "normal"},
+      {"from": "search", "to": "grounded", "label": "citar evidencia", "style": "emphasis"}
+    ]
+  }
+}

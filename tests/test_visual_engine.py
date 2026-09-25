@@ -27,9 +27,10 @@ class VisualEngineTests(unittest.TestCase):
             "nodes": [{"id": "PDF"}, {"id": "Search"}],
             "edges": [{"from": "PDF", "to": "Search"}],
         })
-        self.assertIs(visual_router.RENDERERS[request.type], render_mermaid)
+        self.assertIs(visual_router.RENDERERS[request.type], visual_router.render_native_artifact)
         self.assertIs(visual_router.RENDERERS["dag"], render_graphviz)
         self.assertIs(visual_router.RENDERERS["function"], render_plot)
+        self.assertEqual(self.request("process", {"nodes": [{"id": "Legacy"}], "edges": []}).data["nodes"][0]["title"], "Legacy")
         with self.assertRaises(ValueError):
             self.request("physics_geometry", {})
         with self.assertRaises(ValueError):
@@ -50,7 +51,7 @@ class VisualEngineTests(unittest.TestCase):
             render_graphviz.render(graph, graph_path)
             self.assertIn("A -> B", graph_path.read_text())
 
-    def test_mermaid_also_creates_svg_when_mmdc_is_available(self):
+    def test_native_artifact_is_primary_and_mermaid_is_export(self):
         with tempfile.TemporaryDirectory() as folder:
             output_dir = Path(folder) / "generated"
 
@@ -63,15 +64,15 @@ class VisualEngineTests(unittest.TestCase):
                     patch.object(render_mermaid.subprocess, "run", side_effect=fake_mmdc) as run:
                 request = self.request("process", {
                     "nodes": [{"id": "A", "label": "Inicio"}], "edges": [],
-                })
+                }, "svg")
                 result = visual_router.render_request(request)
 
             self.assertEqual(result["artifacts"], [
-                "generated/prueba-visual.mmd", "generated/prueba-visual.svg",
-                "generated/prueba-visual-artifact.html",
+                "generated/prueba-visual.html", "generated/prueba-visual.mmd",
+                "generated/prueba-visual.svg",
             ])
             self.assertEqual(result["technical_asset"], "generated/prueba-visual.svg")
-            self.assertEqual(result["presentation_artifact"], "generated/prueba-visual-artifact.html")
+            self.assertEqual(result["presentation_artifact"], "generated/prueba-visual.html")
             self.assertTrue((output_dir / "prueba-visual.svg").exists())
             run.assert_called_once()
 
@@ -108,7 +109,7 @@ class VisualEngineTests(unittest.TestCase):
                 first = visual_router.render_request(request)
                 second = visual_router.render_request(request)
             self.assertNotEqual(first["artifact"], second["artifact"])
-            self.assertEqual(len(list(output_dir.iterdir())), 2)
+            self.assertEqual(len(list(output_dir.iterdir())), 4)
 
     def test_plot_is_validated_and_missing_matplotlib_is_clear(self):
         request = self.request("function", {"x": [0, 1], "y": [1, 2]})

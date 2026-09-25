@@ -1,0 +1,36 @@
+{
+  "type": "architecture",
+  "title": "Hermes Study Agent",
+  "subtitle": "Hermes orquesta; el core local conserva el estado",
+  "description": "La ruta visual y la consulta de fuentes usan herramientas determinísticas del repositorio.",
+  "notes": [
+    "Los datos importantes siguen en formatos locales y portables.",
+    "Los renderers existentes se mantienen para exportación y compatibilidad."
+  ],
+  "data": {
+    "groups": [
+      {"title": "Orquestación", "nodes": ["user", "hermes", "skills"]},
+      {"title": "Core local", "nodes": ["visual_router", "source_cli", "sqlite"]},
+      {"title": "Renderers", "nodes": ["native", "exports"]}
+    ],
+    "nodes": [
+      {"id": "user", "title": "Usuario", "role": "input"},
+      {"id": "hermes", "title": "Hermes Agent", "subtitle": "orquestación y razonamiento", "role": "agent"},
+      {"id": "skills", "title": "Skills", "subtitle": "visual-explain · source-query", "role": "process"},
+      {"id": "visual_router", "title": "Visual Router", "subtitle": "scripts/visual_router.py", "role": "tool"},
+      {"id": "source_cli", "title": "Source CLI", "subtitle": "ingest · search · cite", "role": "tool"},
+      {"id": "native", "title": "Native Artifact", "subtitle": "HTML + CSS + SVG", "role": "output"},
+      {"id": "exports", "title": "Export renderers", "subtitle": "Mermaid · Graphviz · Matplotlib", "role": "output"},
+      {"id": "sqlite", "title": "SQLite", "subtitle": "study.db", "role": "storage"}
+    ],
+    "edges": [
+      {"from": "user", "to": "hermes", "label": "solicitud"},
+      {"from": "hermes", "to": "skills", "label": "selecciona skill"},
+      {"from": "skills", "to": "visual_router", "label": "visual request"},
+      {"from": "skills", "to": "source_cli", "label": "source query"},
+      {"from": "visual_router", "to": "native", "label": "artifact principal", "style": "emphasis"},
+      {"from": "visual_router", "to": "exports", "label": "fallback/export"},
+      {"from": "source_cli", "to": "sqlite", "label": "consulta/escritura"}
+    ]
+  }
+}
