@@ -100,14 +100,14 @@ def set_subject_active(subject_id: int, active: bool) -> dict:
         ).fetchone())
 
 
-def add_doubt(subject_id: int, text: str, status: str = "pending") -> dict:
+def add_doubt(subject_id: int, text: str, status: str = "pending", topic_id: int | None = None) -> dict:
     if status not in DOUBT_STATUSES:
         raise InvalidStatusError(f"Estado de duda no válido: {status}")
     if not text.strip():
         raise ValueError("El texto de la duda no puede estar vacío.")
     doubt_id = _write(
-        "INSERT INTO doubts (subject_id, text, status) VALUES (?, ?, ?)",
-        (subject_id, text.strip(), status),
+        "INSERT INTO doubts (subject_id, text, status, topic_id) VALUES (?, ?, ?, ?)",
+        (subject_id, text.strip(), status, topic_id),
     )
     return _one("SELECT * FROM doubts WHERE id = ?", (doubt_id,))
 

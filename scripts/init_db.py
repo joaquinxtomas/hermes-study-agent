@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import sqlite3
+from contextlib import closing
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -19,7 +20,7 @@ def initialize_database(database_path: Path | None = None) -> None:
         raise RuntimeError(f"No se encontraron migraciones en: {MIGRATIONS_DIR}")
 
     database_path.parent.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(database_path) as connection:
+    with closing(sqlite3.connect(database_path)) as connection, connection:
         connection.execute("PRAGMA foreign_keys = ON")
         current_version = connection.execute("PRAGMA user_version").fetchone()[0]
         for migration in migrations:

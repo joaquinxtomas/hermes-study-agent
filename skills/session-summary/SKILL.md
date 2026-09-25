@@ -8,7 +8,7 @@ description: Summarize a closed local study session from SQLite records.
 Use Hermes' terminal tool from the project root to read the session with
 `python3 scripts/study_cli.py session show SESSION_ID`, restore its latest
 checkpoint with `session restore "SUBJECT"`, and read pending doubts with
-`doubts pending --subject "SUBJECT"`. Use only these database results.
+`doubts pending --subject "SUBJECT"`. Use only these database results. Query recorded learning evidence for the session with `python3 scripts/study_cli.py knowledge evidence for-session SESSION_ID`. Include only persisted evidence in `evidence_recorded`; do not infer learning from elapsed time or topics touched.
 
 Return this structure, leaving unavailable fields empty rather than inventing
 them:
@@ -21,6 +21,7 @@ worked_on:
 pending_doubts:
 checkpoint:
 next_action:
+evidence_recorded:
 ```
 
 Calculate duration from the stored `started_at` and `ended_at`. `worked_on` is

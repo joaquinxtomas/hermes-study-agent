@@ -1,4 +1,5 @@
 import sqlite3
+from contextlib import closing
 import tempfile
 import unittest
 from pathlib import Path
@@ -14,7 +15,7 @@ class DatabaseTests(unittest.TestCase):
             database = Path(directory) / "nested" / "study.db"
             init_db.initialize_database(database)
 
-            with sqlite3.connect(database) as connection:
+            with closing(sqlite3.connect(database)) as connection, connection:
                 tables = {
                     row[0]
                     for row in connection.execute(
@@ -24,11 +25,12 @@ class DatabaseTests(unittest.TestCase):
                 self.assertTrue(
                     {
                         "subjects", "doubts", "study_sessions", "checkpoints",
-                        "topics", "sources", "source_pages",
+                        "topics", "sources", "source_pages", "knowledge_states",
+                        "knowledge_evidence", "misconceptions",
                     }
                     <= tables
                 )
-                self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 2)
+                self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 3)
                 doubt_columns = {
                     row[1] for row in connection.execute("PRAGMA table_info(doubts)")
                 }
@@ -53,8 +55,8 @@ class DatabaseTests(unittest.TestCase):
 
             init_db.initialize_database(database)
             init_db.initialize_database(database)
-            with sqlite3.connect(database) as connection:
-                self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 2)
+            with closing(sqlite3.connect(database)) as connection, connection:
+                self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 3)
                 self.assertEqual(
                     sum(row[1] == "topic_id" for row in connection.execute("PRAGMA table_info(doubts)")),
                     1,
