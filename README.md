@@ -161,3 +161,24 @@ acíclicas; árboles/grafos generales, charts y diagramas físicos quedan fuera 
 este alcance. Los demás renderers y el presenter anterior siguen disponibles
 para exportación, fallback y compatibilidad. Detalles, schema y prueba manual:
 [Native Visual Artifact Engine V1](docs/native-visual-artifacts.md).
+
+
+## Knowledge Tracking V1
+
+Knowledge Tracking registra evidencia por topic y dimension. Los estados admitidos son `not_seen`, `introduced`, `understood`, `practicing`, `independent` y `needs_review`; las dimensiones son `conceptual`, `procedural`, `independent_problem_solving` y `retention`. No usa porcentajes ni scores: cada estado representa una inferencia deterministica basada unicamente en evidencia guardada en SQLite, no una medida absoluta de capacidad.
+
+Tipos de evidencia: `explanation`, `guided_exercise`, `independent_exercise`, `exam_question`, `doubt`, `review` y `self_assessment`. Resultados: `correct`, `partially_correct`, `incorrect`, `completed` y `observed`. Una explicacion correcta mejora lo conceptual; un ejercicio guiado puede llevar lo procedural a `practicing`, sin demostrar independencia; un ejercicio independiente correcto puede llevar la dimension correspondiente a `independent`; un error independiente o de examen lleva a `needs_review` (desde `independent`, baja a `practicing` conservadoramente). Un repaso correcto puede mejorar retencion. Registrar una duda no degrada estados.
+
+Los errores observables recurrentes se guardan como misconceptions. Una descripcion identica por topic incrementa ocurrencias; V1 no hace deduplicacion semantica.
+
+Ejemplos desde la raiz:
+
+```bash
+python3 scripts/study_cli.py knowledge topics list --subject "Fisica II"
+python3 scripts/study_cli.py knowledge evidence add 4 procedural guided_exercise correct "Resolvio el ejercicio con una pista" --session-id 12
+python3 scripts/study_cli.py knowledge status show 4
+python3 scripts/study_cli.py knowledge status list independent_problem_solving needs_review
+python3 scripts/study_cli.py knowledge misconceptions add 4 "Confunde flujo electrico con campo electrico al aplicar Gauss"
+```
+
+La evidencia acepta `--session-id`, `--doubt-id` y `--source-id`. Al crear una duda asociada con `--topic-id`, se registra como `doubt/observed`; el cierre de sesion por si solo no crea evidencia ni cambia estados. Hermes puede consultar y registrar con la skill local `knowledge-tracking`, que explica estados usando registros concretos. V1 no incluye planificacion automatica, repeticion espaciada ni dashboards.

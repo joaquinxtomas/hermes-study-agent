@@ -14,8 +14,7 @@ description: Save a study doubt or list pending doubts from local SQLite.
    `python3 scripts/study_cli.py subjects list`.
 3. If it does not exist, ask before adding it. Never infer permission to create
    a subject from a doubt.
-4. Save with
-   `python3 scripts/study_cli.py doubts add "SUBJECT" "DOUBT TEXT"`.
+4. Save with `python3 scripts/study_cli.py doubts add "SUBJECT" "DOUBT TEXT"`. If the doubt is linked to a known topic, add `--topic-id ID`; this records observed evidence without downgrading knowledge state.
 5. Report the stored subject, text and status from the command result.
 
 ## Pending doubts
