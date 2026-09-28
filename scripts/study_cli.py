@@ -5,6 +5,11 @@ import json
 import sqlite3
 import sys
 
+from latency_profiler import LatencyRun
+
+_LATENCY = LatencyRun.from_environment("study_cli")
+_LATENCY.mark("python_entry_started")
+
 import study_store as store
 import knowledge_store
 import knowledge_service
@@ -57,6 +62,19 @@ def _parser() -> argparse.ArgumentParser:
         if action == "checkpoint":
             for field in ("current-topic", "current-source", "current-exercise", "current-step", "next-action"):
                 command.add_argument(f"--{field}")
+    timer = session_commands.add_parser("timer")
+    timer_commands = timer.add_subparsers(dest="timer_action", required=True)
+    timer_status = timer_commands.add_parser("status")
+    timer_status.add_argument("session_id", type=int)
+    timer_fire = timer_commands.add_parser("fire")
+    timer_fire.add_argument("session_id", type=int)
+    timer_fire.add_argument("--event", choices=("target", "hard_limit"), required=True)
+    timer_job = timer_commands.add_parser("set-job")
+    timer_job.add_argument("session_id", type=int)
+    timer_job.add_argument("--event", choices=("target", "hard_limit"), required=True)
+    timer_job.add_argument("--job-id", required=True)
+    timer_clear = timer_commands.add_parser("clear-jobs")
+    timer_clear.add_argument("session_id", type=int)
     knowledge = groups.add_parser("knowledge")
     knowledge_commands = knowledge.add_subparsers(dest="action", required=True)
     status = knowledge_commands.add_parser("status")
@@ -157,6 +175,14 @@ def _run(args: argparse.Namespace):
             "session": store.get_session(checkpoint["session_id"]) if checkpoint else None,
             "checkpoint": checkpoint,
         }
+    if args.action == "timer":
+        if args.timer_action == "status":
+            return store.session_timer(args.session_id)
+        if args.timer_action == "fire":
+            return store.fire_session_timer(args.session_id, args.event)
+        if args.timer_action == "clear-jobs":
+            return store.clear_session_timer_jobs(args.session_id)
+        return store.set_session_timer_job(args.session_id, args.event, args.job_id)
     if args.action == "show":
         session = store.get_session(args.session_id)
         if session is None:
@@ -179,11 +205,24 @@ def _run(args: argparse.Namespace):
 
 
 def main() -> int:
+    _LATENCY.mark("user_request_received")
+    _LATENCY.mark("core_program_started")
     try:
-        result = _run(_parser().parse_args())
+        args = _parser().parse_args()
+        if args.group == "doubts" and args.action == "add":
+            _LATENCY.set_benchmark("capture_doubt")
+        elif args.group == "session" and args.action == "start":
+            _LATENCY.set_benchmark("timer_1m" if args.target_minutes == 1 else "study_session")
+        result = _run(args)
+        if args.group == "session" and args.action == "start":
+            _LATENCY.mark("timer_started")
         print(json.dumps(result, ensure_ascii=False, indent=2))
+        _LATENCY.mark("core_program_finished")
+        _LATENCY.finish(success=True)
         return 0
     except (store.StudyStoreError, knowledge_store.KnowledgeStoreError, ValueError, sqlite3.Error) as error:
+        _LATENCY.mark("core_program_finished")
+        _LATENCY.finish(success=False, error=error)
         print(f"Error: {error}", file=sys.stderr)
         return 1
 

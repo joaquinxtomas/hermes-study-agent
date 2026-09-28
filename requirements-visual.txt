@@ -1,0 +1,2 @@
+sympy==1.14.0
+schemdraw==0.23

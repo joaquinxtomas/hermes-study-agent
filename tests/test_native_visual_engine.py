@@ -1,3 +1,4 @@
+import json
 import sys
 import tempfile
 import unittest
@@ -28,6 +29,43 @@ def sample():
 
 
 class NativeVisualTests(unittest.TestCase):
+    def test_fixture_plans_preserve_nodes_dependencies_and_groups(self):
+        for fixture in (ROOT / 'tests/fixtures/native_visual').glob('*.json'):
+            request = json.loads(fixture.read_text())
+            spec = native_visual_spec.SemanticVisualSpec.from_dict({**request['data'], 'type': request['type'], 'title': request['title']})
+            layouts = layout_flow.responsive_layouts(spec)
+            self.assertEqual(layouts, layout_flow.responsive_layouts(spec))
+            for key, plan in layouts['plans'].items():
+                with self.subTest(fixture=fixture.name, layout=key):
+                    positions = plan['positions']
+                    self.assertEqual(set(positions), {n['id'] for n in spec.nodes})
+                    self.assertEqual(len(positions), len({(p['row'], p['col']) for p in positions.values()}))
+                    columns = int(key.split('-')[1])
+                    self.assertTrue(all(0 <= p['col'] < columns for p in positions.values()))
+                    self.assertEqual(len(plan['anchors']), len(spec.edges))
+                    if not key.startswith('wide'):
+                        for edge in spec.edges:
+                            a, b = positions[edge['from']], positions[edge['to']]
+                            self.assertLess((a['row'], a['col']), (b['row'], b['col']))
+                    for lane in plan['lanes']:
+                        self.assertTrue(all(lane['start'] <= positions[n]['row'] < lane['end'] for n in lane['nodes']))
+            if fixture.stem == 'd_hermes_large':
+                self.assertEqual(layouts['analysis']['node_count'], 19)
+                self.assertLess(layouts['plans']['compact-3']['rows'], layouts['plans']['narrow-1']['rows'])
+
+    def test_analysis_and_interleaved_group_dependencies(self):
+        value = sample()
+        value['groups'] = [{'title': 'A', 'nodes': ['pdf', 'extract', 'search']},
+                           {'title': 'B', 'nodes': ['register', 'db', 'answer', 'pdf']}]
+        spec = native_visual_spec.SemanticVisualSpec.from_dict(value)
+        analysis = layout_flow.analyze_graph(spec)
+        self.assertEqual(analysis, {'node_count': 6, 'edge_count': 5, 'number_of_levels': 6,
+                                  'longest_path': 5, 'max_nodes_per_level': 1,
+                                  'branching_factor': 1, 'number_of_groups': 2, 'density': 'small'})
+        lanes = layout_flow.semantic_lanes(spec)
+        self.assertEqual([lane['group'] for lane in lanes], [0, 1, 0, 1, 0, 1])
+        self.assertEqual([n for lane in lanes for n in lane['nodes']], [n['id'] for n in spec.nodes])
+
     def test_spec_validates_duplicates_missing_edges_and_cycles(self):
         with self.assertRaisesRegex(ValueError, "duplicado"):
             native_visual_spec.SemanticVisualSpec.from_dict({**sample(), "nodes": [sample()["nodes"][0]] * 2})

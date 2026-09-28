@@ -1,0 +1,101 @@
+{
+  "type": "flow",
+  "title": "Una consulta, tres apoyos",
+  "output_format": "html",
+  "data": {
+    "nodes": [
+      {
+        "id": "request",
+        "title": "Consulta",
+        "role": "input"
+      },
+      {
+        "id": "retrieve",
+        "title": "Recuperar fuentes",
+        "role": "process"
+      },
+      {
+        "id": "check",
+        "title": "Evaluar evidencia",
+        "role": "decision"
+      },
+      {
+        "id": "text",
+        "title": "Texto",
+        "role": "process"
+      },
+      {
+        "id": "visual",
+        "title": "Visualización",
+        "role": "process"
+      },
+      {
+        "id": "examples",
+        "title": "Ejemplos",
+        "role": "process"
+      },
+      {
+        "id": "merge",
+        "title": "Integrar explicación",
+        "role": "process"
+      },
+      {
+        "id": "review",
+        "title": "Revisar referencias",
+        "role": "process"
+      },
+      {
+        "id": "answer",
+        "title": "Respuesta",
+        "role": "output"
+      }
+    ],
+    "edges": [
+      {
+        "from": "request",
+        "to": "retrieve"
+      },
+      {
+        "from": "retrieve",
+        "to": "check"
+      },
+      {
+        "from": "check",
+        "to": "text"
+      },
+      {
+        "from": "check",
+        "to": "visual"
+      },
+      {
+        "from": "check",
+        "to": "examples"
+      },
+      {
+        "from": "text",
+        "to": "merge"
+      },
+      {
+        "from": "visual",
+        "to": "merge"
+      },
+      {
+        "from": "examples",
+        "to": "merge"
+      },
+      {
+        "from": "merge",
+        "to": "review"
+      },
+      {
+        "from": "review",
+        "to": "answer"
+      },
+      {
+        "from": "retrieve",
+        "to": "review",
+        "label": "fuentes"
+      }
+    ]
+  }
+}

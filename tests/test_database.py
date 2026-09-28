@@ -26,11 +26,14 @@ class DatabaseTests(unittest.TestCase):
                     {
                         "subjects", "doubts", "study_sessions", "checkpoints",
                         "topics", "sources", "source_pages", "knowledge_states",
-                        "knowledge_evidence", "misconceptions",
+                        "knowledge_evidence", "misconceptions", "study_timers",
                     }
                     <= tables
                 )
-                self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 3)
+                self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 5)
+                timer_columns = {row[1] for row in connection.execute("PRAGMA table_info(study_sessions)")}
+                self.assertTrue({"elapsed_seconds", "running_since", "target_notified_at", "hard_limit_notified_at"} <= timer_columns)
+                self.assertIn("close_reason", timer_columns)
                 doubt_columns = {
                     row[1] for row in connection.execute("PRAGMA table_info(doubts)")
                 }
@@ -51,12 +54,23 @@ class DatabaseTests(unittest.TestCase):
                 (Path(__file__).resolve().parents[1] / "migrations" / "001_initial_schema.sql")
                 .read_text(encoding="utf-8")
             )
+            connection.execute("PRAGMA user_version = 1")
+            connection.execute("INSERT INTO subjects (name) VALUES ('Fisica II')")
+            connection.execute(
+                "INSERT INTO study_sessions (subject_id, started_at, target_minutes, hard_limit_minutes) "
+                "VALUES (1, '2026-01-01T00:00:00+00:00', 75, 90)"
+            )
+            connection.commit()
             connection.close()
 
             init_db.initialize_database(database)
             init_db.initialize_database(database)
             with closing(sqlite3.connect(database)) as connection, connection:
-                self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 3)
+                self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 5)
+                self.assertEqual(
+                    connection.execute("SELECT running_since FROM study_sessions WHERE id = 1").fetchone()[0],
+                    "2026-01-01T00:00:00+00:00",
+                )
                 self.assertEqual(
                     sum(row[1] == "topic_id" for row in connection.execute("PRAGMA table_info(doubts)")),
                     1,

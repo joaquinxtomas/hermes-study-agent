@@ -1,0 +1,33 @@
+{
+  "type": "roadmap",
+  "title": "Electrostática: de campo a potencial",
+  "subtitle": "Ruta conceptual de práctica",
+  "notes": ["Ejemplo visual; adaptar el orden al programa y a las fuentes del curso."],
+  "data": {
+    "sections": [
+      {"id": "field", "title": "Campo eléctrico", "order": 1},
+      {"id": "gauss", "title": "Flujo y ley de Gauss", "order": 2},
+      {"id": "potential", "title": "Potencial", "order": 3}
+    ],
+    "nodes": [
+      {"id": "charge", "title": "Carga y fuerza", "section": "field", "importance": "core"},
+      {"id": "electric_field", "title": "Campo eléctrico", "section": "field", "importance": "core"},
+      {"id": "vectors", "title": "Vectores y superposición", "section": "field", "importance": "recommended"},
+      {"id": "flux", "title": "Flujo eléctrico", "section": "gauss", "importance": "core"},
+      {"id": "gauss_law", "title": "Ley de Gauss", "section": "gauss", "importance": "core"},
+      {"id": "spherical", "title": "Simetría esférica", "section": "gauss", "importance": "recommended"},
+      {"id": "cylindrical", "title": "Simetría cilíndrica", "section": "gauss", "importance": "recommended"},
+      {"id": "conductors", "title": "Conductores", "section": "potential", "importance": "core"},
+      {"id": "work", "title": "Trabajo eléctrico", "section": "potential", "importance": "core"},
+      {"id": "voltage", "title": "Potencial eléctrico", "section": "potential", "importance": "core"},
+      {"id": "equipotential", "title": "Equipotenciales", "section": "potential", "importance": "optional"}
+    ],
+    "main_path": ["charge", "electric_field", "flux", "gauss_law", "conductors", "work", "voltage"],
+    "branches": [
+      {"from": "electric_field", "nodes": ["vectors"], "kind": "recommended"},
+      {"from": "gauss_law", "nodes": ["spherical"], "kind": "recommended"},
+      {"from": "gauss_law", "nodes": ["cylindrical"], "kind": "recommended"},
+      {"from": "voltage", "nodes": ["equipotential"], "kind": "optional"}
+    ]
+  }
+}

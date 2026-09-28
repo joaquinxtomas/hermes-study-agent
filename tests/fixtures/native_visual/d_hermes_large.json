@@ -1,0 +1,317 @@
+{
+  "type": "architecture",
+  "title": "Hermes Study Agent · 19 componentes",
+  "output_format": "html",
+  "data": {
+    "nodes": [
+      {
+        "id": "material",
+        "title": "Fuente académica",
+        "role": "source",
+        "description": "Contexto secundario de Fuente académica. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "source"
+        }
+      },
+      {
+        "id": "register",
+        "title": "Registro",
+        "role": "tool",
+        "description": "Contexto secundario de Registro. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "tool"
+        }
+      },
+      {
+        "id": "extract",
+        "title": "Extracción",
+        "role": "process",
+        "description": "Contexto secundario de Extracción. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "process"
+        }
+      },
+      {
+        "id": "pages",
+        "title": "Páginas locales",
+        "role": "storage",
+        "description": "Contexto secundario de Páginas locales. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "storage"
+        }
+      },
+      {
+        "id": "retrieve",
+        "title": "Source Query",
+        "role": "tool",
+        "description": "Contexto secundario de Source Query. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "tool"
+        }
+      },
+      {
+        "id": "student",
+        "title": "Estudiante",
+        "role": "input",
+        "description": "Contexto secundario de Estudiante. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "input"
+        }
+      },
+      {
+        "id": "hermes",
+        "title": "Hermes",
+        "role": "agent",
+        "description": "Contexto secundario de Hermes. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "agent"
+        }
+      },
+      {
+        "id": "explain",
+        "title": "Explicación",
+        "role": "output",
+        "description": "Contexto secundario de Explicación. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "output"
+        }
+      },
+      {
+        "id": "doubt",
+        "title": "Capturar duda",
+        "role": "process",
+        "description": "Contexto secundario de Capturar duda. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "process"
+        }
+      },
+      {
+        "id": "resolve",
+        "title": "Revisar duda",
+        "role": "process",
+        "description": "Contexto secundario de Revisar duda. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "process"
+        }
+      },
+      {
+        "id": "exercise",
+        "title": "Práctica",
+        "role": "process",
+        "description": "Contexto secundario de Práctica. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "process"
+        }
+      },
+      {
+        "id": "evidence",
+        "title": "Evidencia",
+        "role": "process",
+        "description": "Contexto secundario de Evidencia. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "process"
+        }
+      },
+      {
+        "id": "knowledge",
+        "title": "Knowledge Tracking",
+        "role": "process",
+        "description": "Contexto secundario de Knowledge Tracking. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "process"
+        }
+      },
+      {
+        "id": "session",
+        "title": "Study Session",
+        "role": "process",
+        "description": "Contexto secundario de Study Session. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "process"
+        }
+      },
+      {
+        "id": "checkpoint",
+        "title": "Checkpoint",
+        "role": "process",
+        "description": "Contexto secundario de Checkpoint. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "process"
+        }
+      },
+      {
+        "id": "sqlite",
+        "title": "SQLite",
+        "role": "storage",
+        "description": "Contexto secundario de SQLite. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "storage"
+        }
+      },
+      {
+        "id": "summary",
+        "title": "Resumen",
+        "role": "process",
+        "description": "Contexto secundario de Resumen. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "process"
+        }
+      },
+      {
+        "id": "pack",
+        "title": "Study Pack",
+        "role": "output",
+        "description": "Contexto secundario de Study Pack. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "output"
+        }
+      },
+      {
+        "id": "notebook",
+        "title": "NotebookLM",
+        "role": "output",
+        "description": "Contexto secundario de NotebookLM. Disponible al abrir los detalles sin ampliar todas las tarjetas.",
+        "metadata": {
+          "capa": "output"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "material",
+        "to": "register"
+      },
+      {
+        "from": "register",
+        "to": "extract"
+      },
+      {
+        "from": "extract",
+        "to": "pages"
+      },
+      {
+        "from": "pages",
+        "to": "retrieve"
+      },
+      {
+        "from": "retrieve",
+        "to": "hermes"
+      },
+      {
+        "from": "hermes",
+        "to": "explain"
+      },
+      {
+        "from": "student",
+        "to": "hermes",
+        "label": "consulta"
+      },
+      {
+        "from": "hermes",
+        "to": "doubt"
+      },
+      {
+        "from": "hermes",
+        "to": "exercise"
+      },
+      {
+        "from": "hermes",
+        "to": "session"
+      },
+      {
+        "from": "doubt",
+        "to": "resolve"
+      },
+      {
+        "from": "resolve",
+        "to": "sqlite"
+      },
+      {
+        "from": "exercise",
+        "to": "evidence"
+      },
+      {
+        "from": "evidence",
+        "to": "knowledge"
+      },
+      {
+        "from": "knowledge",
+        "to": "sqlite"
+      },
+      {
+        "from": "session",
+        "to": "checkpoint"
+      },
+      {
+        "from": "checkpoint",
+        "to": "sqlite"
+      },
+      {
+        "from": "sqlite",
+        "to": "summary"
+      },
+      {
+        "from": "summary",
+        "to": "pack"
+      },
+      {
+        "from": "pack",
+        "to": "notebook"
+      },
+      {
+        "from": "retrieve",
+        "to": "pack",
+        "label": "referencias"
+      }
+    ],
+    "groups": [
+      {
+        "title": "Source Engine",
+        "nodes": [
+          "material",
+          "register",
+          "extract",
+          "pages",
+          "retrieve"
+        ]
+      },
+      {
+        "title": "Orquestación",
+        "nodes": [
+          "student",
+          "hermes",
+          "explain"
+        ]
+      },
+      {
+        "title": "Learning State",
+        "nodes": [
+          "doubt",
+          "resolve",
+          "exercise",
+          "evidence",
+          "knowledge",
+          "session",
+          "checkpoint"
+        ]
+      },
+      {
+        "title": "Persistencia",
+        "nodes": [
+          "sqlite"
+        ]
+      },
+      {
+        "title": "Exportación",
+        "nodes": [
+          "summary",
+          "pack",
+          "notebook"
+        ]
+      }
+    ]
+  },
+  "notes": [
+    "Relaciones conceptuales para probar presentación. Study Pack y NotebookLM representan el flujo de exportación previsto, no una integración certificada por este fixture."
+  ]
+}

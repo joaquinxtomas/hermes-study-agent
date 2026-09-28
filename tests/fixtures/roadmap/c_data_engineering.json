@@ -1,0 +1,49 @@
+{
+  "type": "roadmap",
+  "title": "Data Engineering",
+  "subtitle": "Ruta de aprendizaje por etapas",
+  "data": {
+    "sections": [
+      {"id": "fundamentals", "title": "Fundamentos", "order": 1, "description": "Lenguaje, datos y herramientas"},
+      {"id": "storage", "title": "Almacenamiento", "order": 2},
+      {"id": "pipelines", "title": "Pipelines", "order": 3},
+      {"id": "scale", "title": "Escala y operación", "order": 4},
+      {"id": "specialize", "title": "Especialización", "order": 5}
+    ],
+    "nodes": [
+      {"id": "python", "title": "Python", "section": "fundamentals", "importance": "core"},
+      {"id": "sql", "title": "SQL", "section": "fundamentals", "importance": "core"},
+      {"id": "linux", "title": "Linux", "section": "fundamentals", "importance": "recommended"},
+      {"id": "git", "title": "Git", "section": "fundamentals", "importance": "recommended"},
+      {"id": "relational", "title": "Bases relacionales", "section": "storage", "importance": "core"},
+      {"id": "modeling", "title": "Modelado de datos", "section": "storage", "importance": "core"},
+      {"id": "warehouse", "title": "Data warehouse", "section": "storage", "importance": "core"},
+      {"id": "nosql", "title": "NoSQL", "section": "storage", "importance": "optional"},
+      {"id": "lake", "title": "Data lake", "section": "storage", "importance": "recommended"},
+      {"id": "etl", "title": "ETL / ELT", "section": "pipelines", "importance": "core"},
+      {"id": "quality", "title": "Calidad de datos", "section": "pipelines", "importance": "core"},
+      {"id": "batch", "title": "Procesamiento batch", "section": "pipelines", "importance": "recommended"},
+      {"id": "tests", "title": "Tests de pipelines", "section": "pipelines", "importance": "recommended"},
+      {"id": "distributed", "title": "Procesamiento distribuido", "section": "scale", "importance": "core"},
+      {"id": "orchestration", "title": "Orquestación", "section": "scale", "importance": "core"},
+      {"id": "observability", "title": "Observabilidad", "section": "scale", "importance": "recommended"},
+      {"id": "cloud", "title": "Servicios cloud", "section": "scale", "importance": "optional"},
+      {"id": "choose", "title": "Elegir especialización", "section": "specialize", "importance": "core"},
+      {"id": "streaming", "title": "Streaming", "section": "specialize", "importance": "specialization"},
+      {"id": "kafka", "title": "Kafka", "section": "specialize", "importance": "specialization"},
+      {"id": "realtime", "title": "Procesamiento en tiempo real", "section": "specialize", "importance": "specialization"},
+      {"id": "governance", "title": "Gobierno de datos", "section": "specialize", "importance": "optional"}
+    ],
+    "main_path": ["python", "sql", "relational", "modeling", "warehouse", "etl", "quality", "distributed", "orchestration", "choose"],
+    "branches": [
+      {"from": "python", "nodes": ["linux", "git"], "kind": "recommended"},
+      {"from": "modeling", "nodes": ["nosql"], "kind": "optional"},
+      {"from": "warehouse", "nodes": ["lake"], "kind": "recommended"},
+      {"from": "etl", "nodes": ["batch", "tests"], "kind": "recommended", "rejoin": "quality"},
+      {"from": "orchestration", "nodes": ["observability"], "kind": "recommended"},
+      {"from": "orchestration", "nodes": ["cloud"], "kind": "optional"},
+      {"from": "choose", "nodes": ["streaming", "kafka", "realtime"], "kind": "specialization"},
+      {"from": "choose", "nodes": ["governance"], "kind": "optional"}
+    ]
+  }
+}

@@ -90,6 +90,45 @@ Poppler; comprueba su disponibilidad con `command -v pdftotext`. La extracción
 conserva el número de página. PDFs escaneados requieren OCR, que no está
 implementado.
 
+## Sesiones con temporizador
+
+Una sesión puede contener varios bloques de timer secuenciales. Pausar o detener
+un bloque no cierra la sesión; iniciar otra sesión guarda un checkpoint y cierra
+la anterior. Inicializa o actualiza la base después de instalar el cambio con
+`python3 scripts/init_db.py`. En Hermes, `study-fastpath` ejecuta acciones en el
+Study Core y ofrece `/study-timer 25`, `/study-timer pausa`,
+`/study-timer reanudar`, `/study-timer detener` y `/study-timer estado`, sin una
+vuelta por el modelo.
+
+En Hermes Desktop, habilita también la parte **Study Timer** en
+Capabilities → Plugins. El panel se abre al iniciar un timer, permanece en el
+workspace y muestra la cuenta regresiva en el status bar. Sus acciones se
+guardan en SQLite; la actualización por segundo es visual. La notificación de
+fin solo se muestra mientras Desktop está abierto. Un timer local no programa
+cron; los recordatorios con fecha u hora son una acción separada.
+Fuera de Hermes, el CLI conserva las operaciones locales:
+
+```bash
+python3 scripts/study_cli.py session start "Física II" --target-minutes 75 --hard-limit-minutes 90
+python3 scripts/study_cli.py session timer status SESSION_ID
+python3 scripts/study_cli.py session pause SESSION_ID
+python3 scripts/study_cli.py session resume SESSION_ID
+```
+
+Para habilitar el fast path en otra instalación local de Hermes, coloca o
+enlaza `hermes_plugins/study_fastpath` en `~/.hermes/plugins/study-fastpath`,
+ejecuta `hermes plugins enable study-fastpath` y
+`hermes tools enable project --platform cli`, y abre una sesión nueva. Habilita
+la parte Desktop desde Capabilities → Plugins y vuelve a escanear plugins si no
+aparece. El toolset `project` expone las acciones sin pasar por `tool_search`.
+
+Cuando se procesa el límite máximo, Study Core pausa la sesión y guarda un
+checkpoint basado en el último contexto persistido. Actualiza ese checkpoint
+desde Hermes cuando cambie el tema, fuente o ejercicio; un callback no puede ver
+la conversación activa. El tiempo de estudio nunca crea evidencia de
+aprendizaje; el tracking solo registra respuestas, ejercicios y revisiones
+observables vinculados con `--session-id`.
+
 ## Consultar desde Hermes
 
 Desde Hermes Desktop, abre una sesión con el directorio de trabajo en la raíz
@@ -113,15 +152,21 @@ Cuando un diagrama o gráfico mejora la explicación, la skill `visual-explain`
 envía una Visual Request JSON al router determinístico. Las skills describen los
 datos y no dependen de formatos de renderer:
 
-- `flow`, `process`, `architecture`, `pipeline` → Native Visual Artifact Engine:
-  layout DAG determinístico, nodos HTML reales y conectores SVG responsive.
+- `flow`, `process`, `pipeline` → Native Visual Artifact Engine:
+  layout DAG por contenedor (Wide/Compact/Narrow), tarjetas HTML y conectores SVG ortogonales.
+- `architecture` → mapa HTML con layout Graphviz, una vista general de hasta 12
+  componentes y detalles accesibles debajo. Admite relaciones recíprocas.
   El spec expresa significado, nunca coordenadas; Mermaid queda como export/fallback.
+- `roadmap` → ruta de aprendizaje HTML con sections, main path y ramas;
+  presentación editorial responsive, hasta 50 conceptos. No requiere Graphviz.
 - `sequence` → fuente Mermaid `.mmd`;
 - `tree`, `graph`, `dag` → fuente Graphviz `.dot`;
-- `function`, `numeric_data`, `study_metrics` → imagen PNG con Matplotlib.
+- `function`, `geometry`, `coordinate_system`, `vector_field` → HTML nativo interactivo con JSXGraph; SymPy calcula funciones y campos.
+- `circuit` → esquema SVG de Schemdraw dentro de HTML nativo.
+- `numeric_data`, `study_metrics` → imagen PNG con Matplotlib y wrapper HTML.
 
 Los artifacts se guardan en `diagrams/generated/` y los nombres repetidos
-reciben un sufijo, sin sobrescribir los anteriores. Para producir source:
+reciben un sufijo, sin sobrescribir los anteriores. Para generar un HTML nativo:
 
 ```bash
 printf '%s\n' '{"type":"flow","title":"Consulta","data":{"nodes":[{"id":"A","title":"Usuario","role":"input"},{"id":"B","title":"Hermes","role":"agent"}],"edges":[{"from":"A","to":"B","label":"pregunta"}]}}' \
@@ -131,18 +176,31 @@ printf '%s\n' '{"type":"flow","title":"Consulta","data":{"nodes":[{"id":"A","tit
 Ejemplos completos: `docs/source-engine.visual.json` y
 `docs/hermes-architecture.visual.json`. Abrí el `presentation_artifact`
 devuelto directamente en Firefox. Mermaid CLI (`mmdc`) puede crear un SVG de
-exportación si se solicita; si falla, conserva la fuente. El renderer nativo
-funciona offline y usa JavaScript vanilla solo para alinear conectores y
-resaltar relaciones enfocadas.
-Graphviz (`dot`) permite PNG. Ambos son opcionales y no están incluidos. Los
-gráficos requieren Matplotlib; si no
-está instalado, el comando informa cómo habilitarlo. No se ejecutan expresiones
-de usuario: los plots consumen arrays numéricos `x`/`y` ya calculados.
+exportación si se solicita; si falla, conserva la fuente. El renderer de flows
+funciona offline y usa JavaScript vanilla para medir el contenedor, elegir la distribución y
+trazar conectores; foco y hover resaltan las relaciones directas.
+Graphviz (`dot`) distribuye arquitecturas y permite PNG en el renderer de
+grafos. Mermaid CLI es opcional; `dot` se necesita para generar arquitecturas.
+Los gráficos numéricos previos requieren Matplotlib. Las visuales matemáticas
+requieren SymPy y los circuitos Schemdraw al generar el artifact. JSXGraph,
+KaTeX y MathJax se incorporan al HTML cuando hacen falta; se abre offline.
+Las expresiones pasan por una gramática matemática restringida.
+
+## Auditoría de latencia
+
+La instrumentación opt-in del CLI y el renderer, junto con el estado de las
+mediciones end-to-end pendientes de Hermes, está documentada en
+[docs/latency-audit-v1.md](docs/latency-audit-v1.md). Para analizar registros
+locales: `python3 scripts/analyze_latency.py`.
 
 Desde Hermes Desktop, confía el repositorio con `hermes skills trust "$PWD"`,
 abre Hermes desde la raíz y pide una explicación visual. La skill adjunta el
-artifact y lo explica; si una herramienta binaria opcional no está disponible,
-puede enlazar el source Mermaid/DOT correspondiente.
+artifact y lo explica. Para artifacts nativos medianos con ramas/grupos o
+grandes, si `desktop_preview` está disponible, abre el HTML una vez en el panel
+lateral; los pequeños y los pipelines lineales permanecen inline. En CLI o si
+el preview falla, se conserva la ruta del HTML. El router solo devuelve la
+preferencia y nunca depende de Hermes Desktop. Si una herramienta binaria
+opcional no está disponible, puede enlazar el source Mermaid/DOT correspondiente.
 
 ## Tests
 
@@ -151,16 +209,19 @@ python3 -m unittest discover -s tests -v
 ```
 
 El test de PDF genera un documento de dos páginas en una carpeta temporal y se
-omite si `pdftotext` no está instalado. Los tests visuales no necesitan
-herramientas externas; el caso de PNG verifica el error claro cuando Matplotlib
+omite si `pdftotext` no está instalado. Los tests de arquitectura que necesitan
+Graphviz se omiten si `dot` no está instalado; el caso de PNG verifica el error claro cuando Matplotlib
 no está instalado. Los demás tests usan bases SQLite temporales y no dependen de
 materiales personales.
 
-El renderer nativo V1 cubre flows, procesos, pipelines y arquitecturas simples
-acíclicas; árboles/grafos generales, charts y diagramas físicos quedan fuera de
-este alcance. Los demás renderers y el presenter anterior siguen disponibles
+El renderer nativo V2 cubre flows, procesos y pipelines acíclicos. Las
+arquitecturas usan Graphviz y admiten ciclos. Roadmap V1 cubre rutas de
+aprendizaje con camino principal, etapas y ramas. Árboles y grafos generales
+usan Graphviz. Los demás renderers siguen disponibles
 para exportación, fallback y compatibilidad. Detalles, schema y prueba manual:
-[Native Visual Artifact Engine V1](docs/native-visual-artifacts.md).
+[Native Visual Artifact Engine V2](docs/native-visual-artifacts.md) y
+[Roadmap Visual Engine V1](docs/roadmap-visual-artifacts.md),
+[Math and Physics Artifacts](docs/math-visual-artifacts.md).
 
 
 ## Knowledge Tracking V1

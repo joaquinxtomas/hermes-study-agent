@@ -1,0 +1,585 @@
+{
+  "type": "flow",
+  "title": "Stress · 50 nodos y 81 conexiones",
+  "output_format": "html",
+  "data": {
+    "nodes": [
+      {
+        "id": "n0",
+        "title": "Etapa 01",
+        "role": "process"
+      },
+      {
+        "id": "n1",
+        "title": "Etapa 02",
+        "role": "process"
+      },
+      {
+        "id": "n2",
+        "title": "Etapa 03",
+        "role": "process"
+      },
+      {
+        "id": "n3",
+        "title": "Etapa 04",
+        "role": "process"
+      },
+      {
+        "id": "n4",
+        "title": "Etapa 05",
+        "role": "process"
+      },
+      {
+        "id": "n5",
+        "title": "Etapa 06",
+        "role": "process"
+      },
+      {
+        "id": "n6",
+        "title": "Etapa 07",
+        "role": "process"
+      },
+      {
+        "id": "n7",
+        "title": "Etapa 08",
+        "role": "process"
+      },
+      {
+        "id": "n8",
+        "title": "Etapa 09",
+        "role": "process"
+      },
+      {
+        "id": "n9",
+        "title": "Etapa 10",
+        "role": "storage"
+      },
+      {
+        "id": "n10",
+        "title": "Etapa 11",
+        "role": "process"
+      },
+      {
+        "id": "n11",
+        "title": "Etapa 12",
+        "role": "process"
+      },
+      {
+        "id": "n12",
+        "title": "Etapa 13",
+        "role": "process"
+      },
+      {
+        "id": "n13",
+        "title": "Etapa 14",
+        "role": "process"
+      },
+      {
+        "id": "n14",
+        "title": "Etapa 15",
+        "role": "process"
+      },
+      {
+        "id": "n15",
+        "title": "Etapa 16",
+        "role": "process"
+      },
+      {
+        "id": "n16",
+        "title": "Etapa 17",
+        "role": "process"
+      },
+      {
+        "id": "n17",
+        "title": "Etapa 18",
+        "role": "process"
+      },
+      {
+        "id": "n18",
+        "title": "Etapa 19",
+        "role": "process"
+      },
+      {
+        "id": "n19",
+        "title": "Etapa 20",
+        "role": "storage"
+      },
+      {
+        "id": "n20",
+        "title": "Etapa 21",
+        "role": "process"
+      },
+      {
+        "id": "n21",
+        "title": "Etapa 22",
+        "role": "process"
+      },
+      {
+        "id": "n22",
+        "title": "Etapa 23",
+        "role": "process"
+      },
+      {
+        "id": "n23",
+        "title": "Etapa 24",
+        "role": "process"
+      },
+      {
+        "id": "n24",
+        "title": "Etapa 25",
+        "role": "process"
+      },
+      {
+        "id": "n25",
+        "title": "Etapa 26",
+        "role": "process"
+      },
+      {
+        "id": "n26",
+        "title": "Etapa 27",
+        "role": "process"
+      },
+      {
+        "id": "n27",
+        "title": "Etapa 28",
+        "role": "process"
+      },
+      {
+        "id": "n28",
+        "title": "Etapa 29",
+        "role": "process"
+      },
+      {
+        "id": "n29",
+        "title": "Etapa 30",
+        "role": "storage"
+      },
+      {
+        "id": "n30",
+        "title": "Etapa 31",
+        "role": "process"
+      },
+      {
+        "id": "n31",
+        "title": "Etapa 32",
+        "role": "process"
+      },
+      {
+        "id": "n32",
+        "title": "Etapa 33",
+        "role": "process"
+      },
+      {
+        "id": "n33",
+        "title": "Etapa 34",
+        "role": "process"
+      },
+      {
+        "id": "n34",
+        "title": "Etapa 35",
+        "role": "process"
+      },
+      {
+        "id": "n35",
+        "title": "Etapa 36",
+        "role": "process"
+      },
+      {
+        "id": "n36",
+        "title": "Etapa 37",
+        "role": "process"
+      },
+      {
+        "id": "n37",
+        "title": "Etapa 38",
+        "role": "process"
+      },
+      {
+        "id": "n38",
+        "title": "Etapa 39",
+        "role": "process"
+      },
+      {
+        "id": "n39",
+        "title": "Etapa 40",
+        "role": "storage"
+      },
+      {
+        "id": "n40",
+        "title": "Etapa 41",
+        "role": "process"
+      },
+      {
+        "id": "n41",
+        "title": "Etapa 42",
+        "role": "process"
+      },
+      {
+        "id": "n42",
+        "title": "Etapa 43",
+        "role": "process"
+      },
+      {
+        "id": "n43",
+        "title": "Etapa 44",
+        "role": "process"
+      },
+      {
+        "id": "n44",
+        "title": "Etapa 45",
+        "role": "process"
+      },
+      {
+        "id": "n45",
+        "title": "Etapa 46",
+        "role": "process"
+      },
+      {
+        "id": "n46",
+        "title": "Etapa 47",
+        "role": "process"
+      },
+      {
+        "id": "n47",
+        "title": "Etapa 48",
+        "role": "process"
+      },
+      {
+        "id": "n48",
+        "title": "Etapa 49",
+        "role": "process"
+      },
+      {
+        "id": "n49",
+        "title": "Etapa 50",
+        "role": "storage"
+      }
+    ],
+    "edges": [
+      {
+        "from": "n0",
+        "to": "n5"
+      },
+      {
+        "from": "n0",
+        "to": "n6"
+      },
+      {
+        "from": "n1",
+        "to": "n6"
+      },
+      {
+        "from": "n1",
+        "to": "n7"
+      },
+      {
+        "from": "n2",
+        "to": "n7"
+      },
+      {
+        "from": "n2",
+        "to": "n8"
+      },
+      {
+        "from": "n3",
+        "to": "n8"
+      },
+      {
+        "from": "n3",
+        "to": "n9"
+      },
+      {
+        "from": "n4",
+        "to": "n9"
+      },
+      {
+        "from": "n5",
+        "to": "n10"
+      },
+      {
+        "from": "n5",
+        "to": "n11"
+      },
+      {
+        "from": "n6",
+        "to": "n11"
+      },
+      {
+        "from": "n6",
+        "to": "n12"
+      },
+      {
+        "from": "n7",
+        "to": "n12"
+      },
+      {
+        "from": "n7",
+        "to": "n13"
+      },
+      {
+        "from": "n8",
+        "to": "n13"
+      },
+      {
+        "from": "n8",
+        "to": "n14"
+      },
+      {
+        "from": "n9",
+        "to": "n14"
+      },
+      {
+        "from": "n10",
+        "to": "n15"
+      },
+      {
+        "from": "n10",
+        "to": "n16"
+      },
+      {
+        "from": "n11",
+        "to": "n16"
+      },
+      {
+        "from": "n11",
+        "to": "n17"
+      },
+      {
+        "from": "n12",
+        "to": "n17"
+      },
+      {
+        "from": "n12",
+        "to": "n18"
+      },
+      {
+        "from": "n13",
+        "to": "n18"
+      },
+      {
+        "from": "n13",
+        "to": "n19"
+      },
+      {
+        "from": "n14",
+        "to": "n19"
+      },
+      {
+        "from": "n15",
+        "to": "n20"
+      },
+      {
+        "from": "n15",
+        "to": "n21"
+      },
+      {
+        "from": "n16",
+        "to": "n21"
+      },
+      {
+        "from": "n16",
+        "to": "n22"
+      },
+      {
+        "from": "n17",
+        "to": "n22"
+      },
+      {
+        "from": "n17",
+        "to": "n23"
+      },
+      {
+        "from": "n18",
+        "to": "n23"
+      },
+      {
+        "from": "n18",
+        "to": "n24"
+      },
+      {
+        "from": "n19",
+        "to": "n24"
+      },
+      {
+        "from": "n20",
+        "to": "n25"
+      },
+      {
+        "from": "n20",
+        "to": "n26"
+      },
+      {
+        "from": "n21",
+        "to": "n26"
+      },
+      {
+        "from": "n21",
+        "to": "n27"
+      },
+      {
+        "from": "n22",
+        "to": "n27"
+      },
+      {
+        "from": "n22",
+        "to": "n28"
+      },
+      {
+        "from": "n23",
+        "to": "n28"
+      },
+      {
+        "from": "n23",
+        "to": "n29"
+      },
+      {
+        "from": "n24",
+        "to": "n29"
+      },
+      {
+        "from": "n25",
+        "to": "n30"
+      },
+      {
+        "from": "n25",
+        "to": "n31"
+      },
+      {
+        "from": "n26",
+        "to": "n31"
+      },
+      {
+        "from": "n26",
+        "to": "n32"
+      },
+      {
+        "from": "n27",
+        "to": "n32"
+      },
+      {
+        "from": "n27",
+        "to": "n33"
+      },
+      {
+        "from": "n28",
+        "to": "n33"
+      },
+      {
+        "from": "n28",
+        "to": "n34"
+      },
+      {
+        "from": "n29",
+        "to": "n34"
+      },
+      {
+        "from": "n30",
+        "to": "n35"
+      },
+      {
+        "from": "n30",
+        "to": "n36"
+      },
+      {
+        "from": "n31",
+        "to": "n36"
+      },
+      {
+        "from": "n31",
+        "to": "n37"
+      },
+      {
+        "from": "n32",
+        "to": "n37"
+      },
+      {
+        "from": "n32",
+        "to": "n38"
+      },
+      {
+        "from": "n33",
+        "to": "n38"
+      },
+      {
+        "from": "n33",
+        "to": "n39"
+      },
+      {
+        "from": "n34",
+        "to": "n39"
+      },
+      {
+        "from": "n35",
+        "to": "n40"
+      },
+      {
+        "from": "n35",
+        "to": "n41"
+      },
+      {
+        "from": "n36",
+        "to": "n41"
+      },
+      {
+        "from": "n36",
+        "to": "n42"
+      },
+      {
+        "from": "n37",
+        "to": "n42"
+      },
+      {
+        "from": "n37",
+        "to": "n43"
+      },
+      {
+        "from": "n38",
+        "to": "n43"
+      },
+      {
+        "from": "n38",
+        "to": "n44"
+      },
+      {
+        "from": "n39",
+        "to": "n44"
+      },
+      {
+        "from": "n40",
+        "to": "n45"
+      },
+      {
+        "from": "n40",
+        "to": "n46"
+      },
+      {
+        "from": "n41",
+        "to": "n46"
+      },
+      {
+        "from": "n41",
+        "to": "n47"
+      },
+      {
+        "from": "n42",
+        "to": "n47"
+      },
+      {
+        "from": "n42",
+        "to": "n48"
+      },
+      {
+        "from": "n43",
+        "to": "n48"
+      },
+      {
+        "from": "n43",
+        "to": "n49"
+      },
+      {
+        "from": "n44",
+        "to": "n49"
+      }
+    ]
+  }
+}

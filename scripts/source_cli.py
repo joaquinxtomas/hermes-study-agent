@@ -5,6 +5,11 @@ import json
 import sqlite3
 import sys
 
+from latency_profiler import LatencyRun
+
+_LATENCY = LatencyRun.from_environment("source_cli")
+_LATENCY.mark("python_entry_started")
+
 import source_ingest
 import source_search
 import source_store
@@ -75,11 +80,19 @@ def _run(args: argparse.Namespace):
 
 
 def main() -> int:
+    _LATENCY.mark("core_program_started")
     try:
-        print(json.dumps(_run(_parser().parse_args()), ensure_ascii=False, indent=2))
+        args = _parser().parse_args()
+        if args.command == "search-source":
+            _LATENCY.set_benchmark("source_query")
+        print(json.dumps(_run(args), ensure_ascii=False, indent=2))
+        _LATENCY.mark("core_program_finished")
+        _LATENCY.finish(success=True)
         return 0
     except (study_store.StudyStoreError, ValueError, FileNotFoundError,
             RuntimeError, sqlite3.Error) as error:
+        _LATENCY.mark("core_program_finished")
+        _LATENCY.finish(success=False, error=error)
         print(f"Error: {error}", file=sys.stderr)
         return 1
 

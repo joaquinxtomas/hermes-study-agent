@@ -70,8 +70,8 @@ class SemanticVisualSpec:
                 raise ValueError(f"Estilo de conexión no soportado: {style!r}.")
             clean_edges.append({"from": edge["from"], "to": edge["to"],
                                 "label": _text(edge.get("label"), "edge.label", True), "style": style})
-        if _has_cycle(ids, clean_edges):
-            raise ValueError("Los flows V1 deben ser acíclicos.")
+        if kind != "architecture" and _has_cycle(ids, clean_edges):
+            raise ValueError("Los flows, procesos y pipelines deben ser acíclicos.")
         notes = value.get("notes")
         if notes is not None and (not isinstance(notes, list) or any(not isinstance(n, str) or len(n) > TEXT_LIMIT for n in notes)):
             raise ValueError("notes debe ser una lista de textos de hasta 2000 caracteres.")

@@ -1,0 +1,181 @@
+{
+  "type": "architecture",
+  "title": "Componentes del entorno de estudio",
+  "output_format": "html",
+  "data": {
+    "nodes": [
+      {
+        "id": "student",
+        "title": "Estudiante",
+        "role": "input"
+      },
+      {
+        "id": "material",
+        "title": "Fuente académica",
+        "role": "source"
+      },
+      {
+        "id": "register",
+        "title": "Registrar fuente",
+        "role": "process"
+      },
+      {
+        "id": "extract",
+        "title": "Extraer páginas",
+        "role": "process"
+      },
+      {
+        "id": "retrieve",
+        "title": "Source Query",
+        "role": "tool"
+      },
+      {
+        "id": "hermes",
+        "title": "Hermes",
+        "role": "agent"
+      },
+      {
+        "id": "explain",
+        "title": "Explicación",
+        "role": "output"
+      },
+      {
+        "id": "doubt",
+        "title": "Dudas",
+        "role": "process"
+      },
+      {
+        "id": "evidence",
+        "title": "Evidencia",
+        "role": "process"
+      },
+      {
+        "id": "knowledge",
+        "title": "Knowledge Tracking",
+        "role": "process"
+      },
+      {
+        "id": "session",
+        "title": "Sesión de estudio",
+        "role": "process"
+      },
+      {
+        "id": "sqlite",
+        "title": "SQLite",
+        "role": "storage"
+      },
+      {
+        "id": "pack",
+        "title": "Study Pack",
+        "role": "output"
+      },
+      {
+        "id": "export",
+        "title": "Exportación",
+        "role": "output"
+      }
+    ],
+    "edges": [
+      {
+        "from": "material",
+        "to": "register"
+      },
+      {
+        "from": "register",
+        "to": "extract"
+      },
+      {
+        "from": "extract",
+        "to": "retrieve"
+      },
+      {
+        "from": "retrieve",
+        "to": "hermes"
+      },
+      {
+        "from": "hermes",
+        "to": "explain"
+      },
+      {
+        "from": "student",
+        "to": "hermes",
+        "label": "consulta"
+      },
+      {
+        "from": "hermes",
+        "to": "doubt"
+      },
+      {
+        "from": "hermes",
+        "to": "evidence"
+      },
+      {
+        "from": "evidence",
+        "to": "knowledge"
+      },
+      {
+        "from": "hermes",
+        "to": "session"
+      },
+      {
+        "from": "doubt",
+        "to": "sqlite"
+      },
+      {
+        "from": "knowledge",
+        "to": "sqlite"
+      },
+      {
+        "from": "session",
+        "to": "sqlite"
+      },
+      {
+        "from": "sqlite",
+        "to": "pack"
+      },
+      {
+        "from": "pack",
+        "to": "export"
+      }
+    ],
+    "groups": [
+      {
+        "title": "Fuentes",
+        "nodes": [
+          "student",
+          "material",
+          "register",
+          "extract"
+        ]
+      },
+      {
+        "title": "Orquestación",
+        "nodes": [
+          "retrieve",
+          "hermes",
+          "explain"
+        ]
+      },
+      {
+        "title": "Aprendizaje",
+        "nodes": [
+          "doubt",
+          "evidence",
+          "knowledge",
+          "session"
+        ]
+      },
+      {
+        "title": "Persistencia y exportación",
+        "nodes": [
+          "sqlite",
+          "pack",
+          "export"
+        ]
+      }
+    ]
+  },
+  "notes": [
+    "Fixture conceptual de presentación; no declara integraciones implementadas."
+  ]
+}

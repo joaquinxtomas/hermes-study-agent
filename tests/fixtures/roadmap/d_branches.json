@@ -1,0 +1,43 @@
+{
+  "type": "roadmap",
+  "title": "Algoritmos y estructuras de datos",
+  "subtitle": "Camino principal con temas opcionales y avanzados",
+  "data": {
+    "sections": [
+      {"id": "base", "title": "Bases", "order": 1},
+      {"id": "structures", "title": "Estructuras", "order": 2},
+      {"id": "algorithms", "title": "Algoritmos", "order": 3}
+    ],
+    "nodes": [
+      {"id": "complexity", "title": "Complejidad", "section": "base", "importance": "core"},
+      {"id": "recursion", "title": "Recursión", "section": "base", "importance": "core"},
+      {"id": "proofs", "title": "Invariantes", "section": "base", "importance": "recommended"},
+      {"id": "arrays", "title": "Arreglos", "section": "structures", "importance": "core"},
+      {"id": "lists", "title": "Listas", "section": "structures", "importance": "core"},
+      {"id": "trees", "title": "Árboles", "section": "structures", "importance": "core"},
+      {"id": "hash", "title": "Tablas hash", "section": "structures", "importance": "recommended"},
+      {"id": "stacks", "title": "Pilas y colas", "section": "structures", "importance": "recommended"},
+      {"id": "avl", "title": "Árboles AVL", "section": "structures", "importance": "specialization"},
+      {"id": "heaps", "title": "Heaps", "section": "structures", "importance": "optional"},
+      {"id": "sort", "title": "Ordenamiento", "section": "algorithms", "importance": "core"},
+      {"id": "search", "title": "Búsqueda", "section": "algorithms", "importance": "core"},
+      {"id": "graphs", "title": "Grafos", "section": "algorithms", "importance": "core"},
+      {"id": "greedy", "title": "Algoritmos voraces", "section": "algorithms", "importance": "recommended"},
+      {"id": "dynamic", "title": "Programación dinámica", "section": "algorithms", "importance": "specialization"},
+      {"id": "paths", "title": "Caminos mínimos", "section": "algorithms", "importance": "specialization"},
+      {"id": "benchmark", "title": "Benchmarking", "section": "algorithms", "importance": "optional"}
+    ],
+    "main_path": ["complexity", "recursion", "arrays", "lists", "trees", "sort", "search", "graphs"],
+    "branches": [
+      {"from": "recursion", "nodes": ["proofs"], "kind": "recommended"},
+      {"from": "arrays", "nodes": ["hash"], "kind": "recommended", "rejoin": "trees"},
+      {"from": "lists", "nodes": ["stacks"], "kind": "recommended", "rejoin": "trees"},
+      {"from": "trees", "nodes": ["avl"], "kind": "specialization"},
+      {"from": "trees", "nodes": ["heaps"], "kind": "optional"},
+      {"from": "sort", "nodes": ["greedy"], "kind": "recommended"},
+      {"from": "search", "nodes": ["dynamic"], "kind": "specialization"},
+      {"from": "graphs", "nodes": ["paths"], "kind": "specialization"},
+      {"from": "graphs", "nodes": ["benchmark"], "kind": "optional"}
+    ]
+  }
+}

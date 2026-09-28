@@ -1,12 +1,16 @@
-storage/study.db
+# Private study data and local measurements (including SQLite sidecar files).
+storage/*.db*
+storage/*.jsonl
 config/study.yaml
 materials/*
 !materials/README.md
 diagrams/generated/*
+exports/widgets/
 .env
 auth.json
 credentials.json
 tokens.json
+*.log
 __pycache__/
 *.pyc
 .venv/

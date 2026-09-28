@@ -410,15 +410,23 @@ target_duration: 75 min
 hard_limit: 90 min
 ```
 
-Timers must use deterministic scheduling.
+Elapsed study time is calculated and persisted in SQLite; pauses do not count.
+Local timer and session actions use the deterministic Study Core directly;
+they do not search for or schedule cron jobs. A date-specific or recurring
+reminder is a separate user request. SQLite remains authoritative. Do not claim
+that a local timer will proactively notify unless a reminder was explicitly
+requested and scheduled.
 
 Do not keep an LLM invocation alive merely to measure time.
+Elapsed time alone is never learning evidence.
 
 ---
 
 # 14. Hard-stop behavior
 
-Reaching the session hard limit must NOT discard context.
+Reaching the session hard limit must NOT discard context. Pause the session and
+persist a checkpoint from the latest known context; a scheduled task cannot
+assume access to the active tutoring conversation.
 
 Before closing, create a checkpoint containing, when available:
 
@@ -608,14 +616,29 @@ The agent should evaluate whether a visualization meaningfully improves understa
 Prefer:
 
 ```text
+Native HTML flow and architecture artifacts
+→ processes, pipelines, software architecture
+
+Native HTML roadmap artifacts
+→ learning paths and prerequisites
+
+Native HTML math artifacts (JSXGraph + SymPy)
+→ functions, 2D geometry, coordinate systems, vector fields
+
+Native HTML circuit artifacts (Schemdraw)
+→ simple sequential electrical schematics
+
+KaTeX, with MathJax fallback
+→ LaTeX in artifact text
+
 Mermaid
-→ processes, architecture, sequences
+→ sequences, explicit export, fallback
 
 Graphviz
 → trees, graphs, DAGs
 
 Matplotlib
-→ functions, numeric relationships, study metrics
+→ numeric relationships, study metrics
 
 Excalidraw
 → spatial and intuitive diagrams

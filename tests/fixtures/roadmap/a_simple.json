@@ -1,0 +1,24 @@
+{
+  "type": "roadmap",
+  "title": "Fundamentos de programación",
+  "subtitle": "Del lenguaje a los algoritmos",
+  "data": {
+    "sections": [
+      {"id": "base", "title": "Bases", "order": 1},
+      {"id": "solve", "title": "Resolver problemas", "order": 2}
+    ],
+    "nodes": [
+      {"id": "variables", "title": "Variables", "section": "base", "importance": "core", "description": "Representan valores que pueden cambiar durante un programa."},
+      {"id": "functions", "title": "Funciones", "section": "base", "importance": "core"},
+      {"id": "debug", "title": "Depuración", "section": "base", "importance": "recommended"},
+      {"id": "structures", "title": "Estructuras de datos", "section": "solve", "importance": "core"},
+      {"id": "algorithms", "title": "Algoritmos", "section": "solve", "importance": "core"},
+      {"id": "visualize", "title": "Visualización de pasos", "section": "solve", "importance": "optional"}
+    ],
+    "main_path": ["variables", "functions", "structures", "algorithms"],
+    "branches": [
+      {"from": "functions", "nodes": ["debug"], "kind": "recommended"},
+      {"from": "algorithms", "nodes": ["visualize"], "kind": "optional"}
+    ]
+  }
+}

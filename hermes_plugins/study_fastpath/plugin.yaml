@@ -1,0 +1,11 @@
+name: study-fastpath
+version: 1.1.0
+description: Direct timer and study-session actions with an optional Hermes Desktop timer panel.
+provides_tools:
+  - study_timer_start
+  - study_timer_pause
+  - study_timer_resume
+  - study_timer_stop
+  - study_session_start
+  - study_session_end
+  - study_session_status

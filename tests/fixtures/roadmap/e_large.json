@@ -1,0 +1,409 @@
+{
+  "type": "roadmap",
+  "title": "Roadmap de carga · 40 conceptos",
+  "data": {
+    "sections": [
+      {
+        "id": "stage1",
+        "title": "Etapa 1",
+        "order": 1
+      },
+      {
+        "id": "stage2",
+        "title": "Etapa 2",
+        "order": 2
+      },
+      {
+        "id": "stage3",
+        "title": "Etapa 3",
+        "order": 3
+      },
+      {
+        "id": "stage4",
+        "title": "Etapa 4",
+        "order": 4
+      },
+      {
+        "id": "stage5",
+        "title": "Etapa 5",
+        "order": 5
+      }
+    ],
+    "nodes": [
+      {
+        "id": "s1m1",
+        "title": "Concepto 1.1",
+        "section": "stage1",
+        "importance": "core"
+      },
+      {
+        "id": "s1m2",
+        "title": "Concepto 1.2",
+        "section": "stage1",
+        "importance": "core"
+      },
+      {
+        "id": "s1m3",
+        "title": "Concepto 1.3",
+        "section": "stage1",
+        "importance": "core"
+      },
+      {
+        "id": "s1m4",
+        "title": "Concepto 1.4",
+        "section": "stage1",
+        "importance": "core"
+      },
+      {
+        "id": "s1m5",
+        "title": "Concepto 1.5",
+        "section": "stage1",
+        "importance": "core"
+      },
+      {
+        "id": "s1b1",
+        "title": "Tema lateral 1.1",
+        "section": "stage1",
+        "importance": "recommended"
+      },
+      {
+        "id": "s1b2",
+        "title": "Tema lateral 1.2",
+        "section": "stage1",
+        "importance": "optional"
+      },
+      {
+        "id": "s1b3",
+        "title": "Tema lateral 1.3",
+        "section": "stage1",
+        "importance": "specialization"
+      },
+      {
+        "id": "s2m1",
+        "title": "Concepto 2.1",
+        "section": "stage2",
+        "importance": "core"
+      },
+      {
+        "id": "s2m2",
+        "title": "Concepto 2.2",
+        "section": "stage2",
+        "importance": "core"
+      },
+      {
+        "id": "s2m3",
+        "title": "Concepto 2.3",
+        "section": "stage2",
+        "importance": "core"
+      },
+      {
+        "id": "s2m4",
+        "title": "Concepto 2.4",
+        "section": "stage2",
+        "importance": "core"
+      },
+      {
+        "id": "s2m5",
+        "title": "Concepto 2.5",
+        "section": "stage2",
+        "importance": "core"
+      },
+      {
+        "id": "s2b1",
+        "title": "Tema lateral 2.1",
+        "section": "stage2",
+        "importance": "recommended"
+      },
+      {
+        "id": "s2b2",
+        "title": "Tema lateral 2.2",
+        "section": "stage2",
+        "importance": "optional"
+      },
+      {
+        "id": "s2b3",
+        "title": "Tema lateral 2.3",
+        "section": "stage2",
+        "importance": "specialization"
+      },
+      {
+        "id": "s3m1",
+        "title": "Concepto 3.1",
+        "section": "stage3",
+        "importance": "core"
+      },
+      {
+        "id": "s3m2",
+        "title": "Concepto 3.2",
+        "section": "stage3",
+        "importance": "core"
+      },
+      {
+        "id": "s3m3",
+        "title": "Concepto 3.3",
+        "section": "stage3",
+        "importance": "core"
+      },
+      {
+        "id": "s3m4",
+        "title": "Concepto 3.4",
+        "section": "stage3",
+        "importance": "core"
+      },
+      {
+        "id": "s3m5",
+        "title": "Concepto 3.5",
+        "section": "stage3",
+        "importance": "core"
+      },
+      {
+        "id": "s3b1",
+        "title": "Tema lateral 3.1",
+        "section": "stage3",
+        "importance": "recommended"
+      },
+      {
+        "id": "s3b2",
+        "title": "Tema lateral 3.2",
+        "section": "stage3",
+        "importance": "optional"
+      },
+      {
+        "id": "s3b3",
+        "title": "Tema lateral 3.3",
+        "section": "stage3",
+        "importance": "specialization"
+      },
+      {
+        "id": "s4m1",
+        "title": "Concepto 4.1",
+        "section": "stage4",
+        "importance": "core"
+      },
+      {
+        "id": "s4m2",
+        "title": "Concepto 4.2",
+        "section": "stage4",
+        "importance": "core"
+      },
+      {
+        "id": "s4m3",
+        "title": "Concepto 4.3",
+        "section": "stage4",
+        "importance": "core"
+      },
+      {
+        "id": "s4m4",
+        "title": "Concepto 4.4",
+        "section": "stage4",
+        "importance": "core"
+      },
+      {
+        "id": "s4m5",
+        "title": "Concepto 4.5",
+        "section": "stage4",
+        "importance": "core"
+      },
+      {
+        "id": "s4b1",
+        "title": "Tema lateral 4.1",
+        "section": "stage4",
+        "importance": "recommended"
+      },
+      {
+        "id": "s4b2",
+        "title": "Tema lateral 4.2",
+        "section": "stage4",
+        "importance": "optional"
+      },
+      {
+        "id": "s4b3",
+        "title": "Tema lateral 4.3",
+        "section": "stage4",
+        "importance": "specialization"
+      },
+      {
+        "id": "s5m1",
+        "title": "Concepto 5.1",
+        "section": "stage5",
+        "importance": "core"
+      },
+      {
+        "id": "s5m2",
+        "title": "Concepto 5.2",
+        "section": "stage5",
+        "importance": "core"
+      },
+      {
+        "id": "s5m3",
+        "title": "Concepto 5.3",
+        "section": "stage5",
+        "importance": "core"
+      },
+      {
+        "id": "s5m4",
+        "title": "Concepto 5.4",
+        "section": "stage5",
+        "importance": "core"
+      },
+      {
+        "id": "s5m5",
+        "title": "Concepto 5.5",
+        "section": "stage5",
+        "importance": "core"
+      },
+      {
+        "id": "s5b1",
+        "title": "Tema lateral 5.1",
+        "section": "stage5",
+        "importance": "recommended"
+      },
+      {
+        "id": "s5b2",
+        "title": "Tema lateral 5.2",
+        "section": "stage5",
+        "importance": "optional"
+      },
+      {
+        "id": "s5b3",
+        "title": "Tema lateral 5.3",
+        "section": "stage5",
+        "importance": "specialization"
+      }
+    ],
+    "main_path": [
+      "s1m1",
+      "s1m2",
+      "s1m3",
+      "s1m4",
+      "s1m5",
+      "s2m1",
+      "s2m2",
+      "s2m3",
+      "s2m4",
+      "s2m5",
+      "s3m1",
+      "s3m2",
+      "s3m3",
+      "s3m4",
+      "s3m5",
+      "s4m1",
+      "s4m2",
+      "s4m3",
+      "s4m4",
+      "s4m5",
+      "s5m1",
+      "s5m2",
+      "s5m3",
+      "s5m4",
+      "s5m5"
+    ],
+    "branches": [
+      {
+        "from": "s1m1",
+        "nodes": [
+          "s1b1"
+        ],
+        "kind": "recommended"
+      },
+      {
+        "from": "s1m2",
+        "nodes": [
+          "s1b2"
+        ],
+        "kind": "optional"
+      },
+      {
+        "from": "s1m3",
+        "nodes": [
+          "s1b3"
+        ],
+        "kind": "specialization"
+      },
+      {
+        "from": "s2m1",
+        "nodes": [
+          "s2b1"
+        ],
+        "kind": "recommended"
+      },
+      {
+        "from": "s2m2",
+        "nodes": [
+          "s2b2"
+        ],
+        "kind": "optional"
+      },
+      {
+        "from": "s2m3",
+        "nodes": [
+          "s2b3"
+        ],
+        "kind": "specialization"
+      },
+      {
+        "from": "s3m1",
+        "nodes": [
+          "s3b1"
+        ],
+        "kind": "recommended"
+      },
+      {
+        "from": "s3m2",
+        "nodes": [
+          "s3b2"
+        ],
+        "kind": "optional"
+      },
+      {
+        "from": "s3m3",
+        "nodes": [
+          "s3b3"
+        ],
+        "kind": "specialization"
+      },
+      {
+        "from": "s4m1",
+        "nodes": [
+          "s4b1"
+        ],
+        "kind": "recommended"
+      },
+      {
+        "from": "s4m2",
+        "nodes": [
+          "s4b2"
+        ],
+        "kind": "optional"
+      },
+      {
+        "from": "s4m3",
+        "nodes": [
+          "s4b3"
+        ],
+        "kind": "specialization"
+      },
+      {
+        "from": "s5m1",
+        "nodes": [
+          "s5b1"
+        ],
+        "kind": "recommended"
+      },
+      {
+        "from": "s5m2",
+        "nodes": [
+          "s5b2"
+        ],
+        "kind": "optional"
+      },
+      {
+        "from": "s5m3",
+        "nodes": [
+          "s5b3"
+        ],
+        "kind": "specialization"
+      }
+    ]
+  }
+}

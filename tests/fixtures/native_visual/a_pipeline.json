@@ -1,0 +1,52 @@
+{
+  "type": "flow",
+  "title": "De la fuente a la explicación",
+  "output_format": "html",
+  "data": {
+    "nodes": [
+      {
+        "id": "original",
+        "title": "Fuente original",
+        "role": "source"
+      },
+      {
+        "id": "extract",
+        "title": "Extraer texto",
+        "role": "process"
+      },
+      {
+        "id": "store",
+        "title": "Guardar páginas",
+        "role": "storage"
+      },
+      {
+        "id": "search",
+        "title": "Buscar evidencia",
+        "role": "tool"
+      },
+      {
+        "id": "answer",
+        "title": "Respuesta con citas",
+        "role": "output"
+      }
+    ],
+    "edges": [
+      {
+        "from": "original",
+        "to": "extract"
+      },
+      {
+        "from": "extract",
+        "to": "store"
+      },
+      {
+        "from": "store",
+        "to": "search"
+      },
+      {
+        "from": "search",
+        "to": "answer"
+      }
+    ]
+  }
+}

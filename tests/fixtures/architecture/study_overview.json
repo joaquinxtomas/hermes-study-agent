@@ -1,0 +1,36 @@
+{
+  "type": "architecture",
+  "title": "Mapa general del Study Agent",
+  "subtitle": "Consulta con fuentes, seguimiento de estudio y síntesis portable",
+  "data": {
+    "nodes": [
+      {"id": "student", "title": "Estudiante", "role": "input"},
+      {"id": "hermes", "title": "Hermes", "subtitle": "coordina y explica", "role": "agent"},
+      {"id": "source", "title": "Source Engine", "subtitle": "recupera evidencia", "role": "source"},
+      {"id": "sessions", "title": "Study Sessions", "subtitle": "sesión y checkpoints", "role": "process"},
+      {"id": "knowledge", "title": "Knowledge Tracking", "subtitle": "evidencia de aprendizaje", "role": "process"},
+      {"id": "sqlite", "title": "SQLite", "subtitle": "fuentes · sesiones · aprendizaje", "role": "storage"},
+      {"id": "pack", "title": "Study Pack", "subtitle": "síntesis opcional", "role": "process"},
+      {"id": "markdown", "title": "Markdown portable", "role": "output"}
+    ],
+    "edges": [
+      {"from": "student", "to": "hermes"},
+      {"from": "hermes", "to": "source", "label": "consulta"},
+      {"from": "source", "to": "hermes", "label": "evidencia citada"},
+      {"from": "hermes", "to": "sessions"},
+      {"from": "hermes", "to": "knowledge"},
+      {"from": "source", "to": "sqlite"},
+      {"from": "sessions", "to": "sqlite"},
+      {"from": "knowledge", "to": "sqlite"},
+      {"from": "hermes", "to": "pack", "style": "dashed"},
+      {"from": "sqlite", "to": "pack", "style": "dashed"},
+      {"from": "pack", "to": "markdown"}
+    ],
+    "groups": [
+      {"title": "Interacción", "nodes": ["student", "hermes"]},
+      {"title": "Estudio y fuentes", "nodes": ["source", "sessions", "knowledge"]},
+      {"title": "Persistencia y salida", "nodes": ["sqlite", "pack", "markdown"]}
+    ]
+  },
+  "notes": ["Study Pack representa una síntesis opcional; el mapa no afirma que la exportación esté automatizada."]
+}
