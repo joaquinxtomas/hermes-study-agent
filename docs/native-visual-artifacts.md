@@ -1,5 +1,10 @@
 # Native Visual Artifact Engine V2
 
+> **Legacy backend reference.** New diagram requests use Hermes
+> `concept-diagrams` (`~/.hermes/skills/creative/concept-diagrams`).
+> This document records the existing flow/architecture renderer contracts;
+> do not add a parallel authoring skill.
+
 Para `flow`, `process` y `pipeline`, el router valida un spec semántico y genera
 HTML standalone con cards HTML y conexiones SVG ortogonales. Para
 `architecture`, genera un mapa HTML standalone con layout Graphviz.
@@ -49,8 +54,7 @@ CSS, SVG, coordenadas ni anchors.
   real, elección de plan, anchors, rutas SVG e interacción.
 - `render_architecture_artifact.py`: architecture con Graphviz para el layout,
   SVG embebido en HTML, fichas de componentes y relaciones completas.
-- `visual-explain`: utilidad pedagógica y clasificación del intent.
-- `native-visual-artifacts`: construcción del spec semántico de tipos nativos.
+- Hermes `concept-diagrams`: punto de entrada activo; este renderer es un backend legacy.
 - `visual_presentation.py`: clasificación de complejidad y preferencia inline/expanded;
   no abre herramientas ni altera el HTML.
 
@@ -170,12 +174,16 @@ detalles de cards.
 | Complejidad | Criterio inicial (basta uno) | Presentación |
 | --- | --- | --- |
 | Large | ≥16 nodos, ≥24 edges, ≥12 niveles, ≥6 nodos por nivel, ramificación ≥5 o ≥6 grupos | Expanded |
-| Medium | ≥9 nodos, ≥11 edges, ≥8 niveles, ≥4 nodos por nivel, ramificación ≥3 o ≥3 grupos | Expanded en arquitectura o cuando hay ramas/grupos; lineales pueden quedar inline |
+| Medium | ≥9 nodos, ≥11 edges, ≥8 niveles, ≥4 nodos por nivel, ramificación ≥3 o ≥3 grupos | Inline, salvo densidad alta |
 | Small | Ninguno de los anteriores | Inline |
 
-Se ajustan en `scripts/visual_presentation.py`. Una arquitectura de 11 nodos
-con 3 grupos prefiere expanded; un pipeline lineal de 10 nodos sigue inline.
-En Desktop, artifacts pequeños se muestran con el directive nativo
+La presentación expandida se reserva para `large` o diagramas medianos muy
+densos (≥12 edges y al menos dos edges por nodo). Tener grupos o ramas, por sí
+solo, no envía un artifact mediano al panel lateral.
+
+Se ajustan en `scripts/visual_presentation.py`. Una arquitectura mediana con
+3 grupos permanece inline; un pipeline lineal de 10 nodos también. En Desktop,
+artifacts pequeños y medianos se muestran con el directive nativo
 `::preview{file="/absolute/path.html"}`; los expanded abren una vez
 `desktop_preview(action=open)` si la herramienta está disponible. La ubicación
 de presentación no cambia spec, renderer, layout ni archivo. Si falta el
@@ -197,8 +205,8 @@ Prueba manual en Hermes Desktop, desde la raíz del repo y con la skill cargada:
    Esperado: `small`, `inline`, sin llamada a `desktop_preview`.
 2. «Mostrame cómo se conectan Source Engine, Hermes, Knowledge Tracking,
    Study Sessions, SQLite y Study Pack. Agrupalos por función.»
-   Esperado: arquitectura mediana y un `desktop_preview(action=open)` para el
-   HTML generado; verificar que el panel muestra nodos y conectores.
+   Esperado: arquitectura mediana inline, sin `desktop_preview`; verificar que
+   el artifact integrado muestra nodos y conectores.
 3. «Mostrame la arquitectura completa del flujo de estudio de Física,
    incluyendo fuentes, ingesta, retrieval, Hermes, sesiones, dudas, evidencia,
    Knowledge Tracking, persistencia y exportación.»

@@ -1,4 +1,4 @@
-"""Standalone native HTML for interactive mathematics and circuit diagrams."""
+"""Compatibility math backend; authoring routes through study-concept-diagrams."""
 
 import ast
 import base64
@@ -339,6 +339,7 @@ def render(request, path):
 
 
 _CSS = """
+/* Shared visual guidance: repository DESIGN.md. */
 :root{color-scheme:light dark;--bg:#f3f5f8;--paper:#fff;--ink:#18202c;--muted:#586779;--accent:#1d69c9;--border:#dbe2ea}
 @media(prefers-color-scheme:dark){:root{--bg:#111923;--paper:#1b2530;--ink:#eef4fb;--muted:#b0c0d1;--accent:#7fb7ff;--border:#344355}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif}main{max-width:1120px;margin:0 auto;padding:clamp(16px,4vw,48px)}header{margin-bottom:24px}.eyebrow{font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:700}h1{font-size:clamp(1.7rem,4vw,2.8rem);line-height:1.16;margin:.4rem 0}h2{font-size:1.1rem}.subtitle{font-size:1.15rem;color:var(--muted)}header p{max-width:70ch}.surface,.notes{background:var(--paper);border:1px solid var(--border);border-radius:18px;padding:clamp(12px,2vw,24px);box-shadow:0 10px 30px #0000000a}.jxgbox{width:100%;height:clamp(340px,62vw,670px);border:0;background:var(--paper);touch-action:none}.parameter{display:block;font-weight:600;margin:12px 6px 0}.parameter input{display:block;width:100%;margin-top:8px;accent-color:var(--accent)}.circuit{background:#fff;border-radius:10px;padding:16px}.circuit svg{display:block;max-width:100%;height:auto;margin:auto}.notes{margin-top:18px}.notes ul{margin-bottom:0}footer{color:var(--muted);margin-top:22px}

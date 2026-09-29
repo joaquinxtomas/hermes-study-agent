@@ -1,4 +1,4 @@
-"""Standalone HTML cards with container-selected plans and orthogonal SVG links."""
+"""Compatibility backend for flows; authoring routes through study-concept-diagrams."""
 
 from html import escape
 from pathlib import Path
@@ -225,6 +225,7 @@ window.addEventListener('load',schedule);document.fonts?.ready.then(schedule);sc
 """
 
 _CSS = """
+/* Shared visual guidance: repository DESIGN.md. */
 :root{color-scheme:light dark;--bg:#f3f5f6;--paper:#fff;--ink:#1d292e;--muted:#596b73;--line:#cbd7da;--accent:#20756d;--tint:#e6f2ef;--edge:#507f79}
 @media(prefers-color-scheme:dark){:root{--bg:#151b1d;--paper:#20292c;--ink:#edf3f2;--muted:#b4c3c5;--line:#45575b;--accent:#8ed5c5;--tint:#293d3b;--edge:#a0beb8}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,sans-serif}

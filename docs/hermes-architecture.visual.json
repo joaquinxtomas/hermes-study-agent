@@ -16,7 +16,7 @@
     "nodes": [
       {"id": "user", "title": "Usuario", "role": "input"},
       {"id": "hermes", "title": "Hermes Agent", "subtitle": "orquestación y razonamiento", "role": "agent"},
-      {"id": "skills", "title": "Skills", "subtitle": "visual-explain · source-query", "role": "process"},
+      {"id": "skills", "title": "Skills", "subtitle": "concept-diagrams · source-query", "role": "process"},
       {"id": "visual_router", "title": "Visual Router", "subtitle": "scripts/visual_router.py", "role": "tool"},
       {"id": "source_cli", "title": "Source CLI", "subtitle": "ingest · search · cite", "role": "tool"},
       {"id": "native", "title": "Native Artifact", "subtitle": "HTML + CSS + SVG", "role": "output"},

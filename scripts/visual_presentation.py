@@ -17,13 +17,14 @@ def choose_presentation(visual_type: str, analysis: dict) -> dict:
     else:
         complexity = "small"
 
-    expanded = complexity == "large" or (complexity == "medium" and (
-        visual_type in {"architecture", "roadmap"} or branching >= 2 or groups >= 2 or width >= 3))
+    very_dense = nodes > 0 and edges >= 12 and edges >= 2 * nodes
+    expanded = complexity == "large" or very_dense
     return {
         "complexity": complexity,
         "preferred_presentation": "expanded" if expanded else "inline",
         "presentation_reason": (
-            f"{complexity}_complexity_{visual_type}" if expanded else
+            f"{complexity}_complexity_{visual_type}" if complexity == "large" else
+            f"dense_{visual_type}" if very_dense else
             "medium_fits_inline" if complexity == "medium" else "small_artifact"
         ),
     }

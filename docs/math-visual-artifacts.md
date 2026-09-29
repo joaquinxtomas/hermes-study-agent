@@ -1,5 +1,9 @@
 # Native Math and Physics Artifacts
 
+> **Legacy backend reference.** Mathematical and physics diagrams use Hermes
+> `concept-diagrams`. This
+> page documents the specialized renderer constraints, not a separate skill.
+
 The visual router now produces standalone HTML for functions, coordinate
 systems, geometry, vector fields, and electrical circuits. It keeps the same
 presentation artifact path used by the other native renderers. The generated

@@ -31,7 +31,7 @@ class ArchitectureArtifactTests(unittest.TestCase):
             self.assertEqual(result["renderer"], "native-graphviz")
             self.assertEqual((result["node_count"], result["edge_count"]), (8, 11))
             self.assertEqual(result["number_of_levels"], 0)
-            self.assertEqual(result["preferred_presentation"], "expanded")
+            self.assertEqual(result["preferred_presentation"], "inline")
             self.assertEqual(result["artifacts"], [result["presentation_artifact"]])
             self.assertEqual(html.count("<svg "), 2)
             self.assertEqual(html.count("class='card'"), 8)

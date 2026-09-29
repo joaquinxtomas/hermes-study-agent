@@ -144,16 +144,72 @@ class VisualEngineTests(unittest.TestCase):
 
         cases = [
             ("pipeline", metrics(5, 4, 5), "small", "inline"),
-            ("architecture", metrics(11, 13, 6, 3, 3, 3), "medium", "expanded"),
+            ("architecture", metrics(11, 13, 6, 3, 3, 3), "medium", "inline"),
             ("architecture", metrics(19, 24, 8, 4, 3, 4), "large", "expanded"),
             ("pipeline", metrics(10, 9, 10), "medium", "inline"),
-            ("architecture", metrics(7, 7, 4, 2, 2, 3), "medium", "expanded"),
+            ("architecture", metrics(7, 7, 4, 2, 2, 3), "medium", "inline"),
+            ("graph", metrics(7, 14, 4, 3, 3, 2), "medium", "expanded"),
         ]
         for kind, graph, complexity, presentation in cases:
             with self.subTest(kind=kind, graph=graph):
                 decision = choose_presentation(kind, graph)
                 self.assertEqual((decision["complexity"], decision["preferred_presentation"]),
                                  (complexity, presentation))
+
+    @unittest.skipUnless(shutil.which("dot"), "Graphviz no está instalado")
+    def test_unified_diagram_requests_cover_physics_roadmap_and_architecture(self):
+        requests = [
+            {
+                "type": "flow", "title": "Ley de Gauss",
+                "data": {"nodes": [
+                    {"id": "charge", "title": "Distribución de carga", "role": "input"},
+                    {"id": "field", "title": "Campo eléctrico", "role": "process"},
+                    {"id": "flux", "title": "Flujo en superficie cerrada", "role": "process"},
+                    {"id": "law", "title": "Carga encerrada", "role": "output"}],
+                    "edges": [{"from": "charge", "to": "field"},
+                              {"from": "field", "to": "flux"},
+                              {"from": "flux", "to": "law"}]},
+            },
+            {
+                "type": "roadmap", "title": "Aprender bases de datos",
+                "data": {
+                    "sections": [{"id": "base", "title": "Fundamentos"},
+                                 {"id": "design", "title": "Diseño y consulta"}],
+                    "nodes": [
+                        {"id": "data", "title": "Datos y tablas", "section": "base", "importance": "core"},
+                        {"id": "sql", "title": "SQL básico", "section": "base", "importance": "core"},
+                        {"id": "relational", "title": "Modelo relacional", "section": "design", "importance": "core"},
+                        {"id": "keys", "title": "Claves y relaciones", "section": "design", "importance": "core"},
+                        {"id": "normalize", "title": "Normalización", "section": "design", "importance": "recommended"}],
+                    "main_path": ["data", "sql", "relational", "keys"],
+                    "branches": [{"from": "keys", "nodes": ["normalize"], "kind": "recommended"}]},
+            },
+            {
+                "type": "architecture", "title": "Componentes de estudio",
+                "data": {"nodes": [
+                    {"id": "source", "title": "Source Engine", "role": "source"},
+                    {"id": "knowledge", "title": "Knowledge Tracking", "role": "process"},
+                    {"id": "sqlite", "title": "SQLite", "role": "storage"},
+                    {"id": "pack", "title": "Study Pack", "role": "output"}],
+                    "edges": [{"from": "source", "to": "knowledge"},
+                              {"from": "knowledge", "to": "sqlite"},
+                              {"from": "sqlite", "to": "pack"}]},
+            },
+        ]
+        with tempfile.TemporaryDirectory() as folder:
+            output_dir = Path(folder) / "generated"
+            with patch.object(visual_router, "OUTPUT_DIR", output_dir), \
+                    patch.object(visual_router, "ROOT", Path(folder)):
+                results = [visual_router.render_request(visual_router.VisualRequest.from_dict(request))
+                           for request in requests]
+            self.assertEqual([item["renderer"] for item in results], ["native", "native-roadmap", "native-graphviz"])
+            self.assertEqual([item["preferred_presentation"] for item in results], ["inline"] * 3)
+            for item, expected_label in zip(results, ("Distribución de carga", "SQL básico", "Source Engine")):
+                html = Path(folder) / item["presentation_artifact"]
+                self.assertTrue(html.is_file())
+                content = html.read_text(encoding="utf-8")
+                self.assertTrue(content.startswith("<!doctype html>"))
+                self.assertIn(expected_label, content)
 
     @unittest.skipUnless(shutil.which("dot"), "Graphviz no está instalado")
     def test_native_router_generates_html_without_desktop_preview(self):
@@ -168,7 +224,7 @@ class VisualEngineTests(unittest.TestCase):
                                {"title": "B", "nodes": [str(i) for i in range(4, 8)]},
                                {"title": "C", "nodes": [str(i) for i in range(8, 11)]}],
                 }, "html"))
-            self.assertEqual(result["preferred_presentation"], "expanded")
+            self.assertEqual(result["preferred_presentation"], "inline")
             self.assertTrue((Path(folder) / result["presentation_artifact"]).is_file())
 
 

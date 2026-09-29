@@ -1,5 +1,8 @@
 # Native V2: validación en Hermes y límites del host
 
+Esta matriz conserva resultados de los backends actuales. Las solicitudes
+nuevas se prueban desde Hermes `concept-diagrams`.
+
 Validado el 26 de septiembre de 2026 con el checkout local de Hermes Desktop
 0.17.6. Se lanzó una instancia Electron independiente con perfil/HERMES_HOME
 temporales, sin proveedor ni conversación personal. Se omitió el onboarding

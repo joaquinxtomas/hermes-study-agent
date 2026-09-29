@@ -1,5 +1,9 @@
 # Roadmap Visual Engine V1
 
+> **Legacy backend reference.** Roadmap requests use Hermes
+> `concept-diagrams`, the single active diagramming skill. Keep this page for
+> renderer/schema details.
+
 `roadmap` presenta una ruta de aprendizaje o progreso: etapas ordenadas,
 un camino principal y ramas subordinadas. No usa el layout de `architecture` ni
 interpreta los conceptos como un grafo arbitrario.
@@ -60,10 +64,10 @@ en HTML. `description` se abre con `<details>`. Hover y foco resaltan el nodo y
 sus vecinos inmediatos. Todo abre offline, sin servidor, Graphviz, React ni
 fuentes externas.
 
-La política de presentación reutiliza `visual_presentation.py`: pequeño
-→ inline; mediano o grande → expanded. La skill abre `desktop_preview` una sola
-vez si esa herramienta está disponible; el router Python solo devuelve la
-preferencia y el HTML. CLI entrega el archivo normalmente.
+La política de presentación reutiliza `visual_presentation.py`: pequeño y
+mediano → inline; grande o muy denso → expanded. La skill unificada abre
+`desktop_preview` una sola vez si está disponible; el router Python solo
+devuelve la preferencia y el HTML. CLI entrega el archivo normalmente.
 
 `roadmap` no exporta Mermaid en V1: la gramática de sections y ramas perdería
 jerarquía si se degradara automáticamente a edges de un grafo. El único

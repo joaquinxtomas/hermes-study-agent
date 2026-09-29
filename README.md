@@ -18,8 +18,8 @@ materials/             scripts/source_store.py
 El motor visual local agrega esta ruta independiente:
 
 ```text
-Hermes visual-explain skill → scripts/visual_router.py → renderer
-                                                   └→ diagrams/generated/
+Hermes concept-diagrams skill → standalone HTML preview in chat
+Project visual_router.py      → compatibility renderers → diagrams/generated/
 ```
 
 Las skills de este repositorio se exponen mediante `.hermes/skills`, enlazado a
@@ -146,11 +146,13 @@ La búsqueda actual recorre las páginas locales, normaliza mayúsculas y tildes
 ordena por cobertura/frecuencia de términos, con una bonificación por frase
 exacta. Es lexical; no usa embeddings, OCR ni proveedores externos.
 
-## Visual Learning Engine V1
+## Visual diagrams
 
-Cuando un diagrama o gráfico mejora la explicación, la skill `visual-explain`
-envía una Visual Request JSON al router determinístico. Las skills describen los
-datos y no dependen de formatos de renderer:
+La única skill activa para diagramas y explicaciones visuales es Hermes
+`concept-diagrams` (`~/.hermes/skills/creative/concept-diagrams`). Sus
+artifacts pequeños y medianos se previsualizan inline; los grandes o densos
+pueden abrirse en el panel expandido. `DESIGN.md` guía los renderers del
+proyecto. Los renderers especializados siguen como backends de compatibilidad:
 
 - `flow`, `process`, `pipeline` → Native Visual Artifact Engine:
   layout DAG por contenedor (Wide/Compact/Narrow), tarjetas HTML y conectores SVG ortogonales.
@@ -194,13 +196,12 @@ mediciones end-to-end pendientes de Hermes, está documentada en
 locales: `python3 scripts/analyze_latency.py`.
 
 Desde Hermes Desktop, confía el repositorio con `hermes skills trust "$PWD"`,
-abre Hermes desde la raíz y pide una explicación visual. La skill adjunta el
-artifact y lo explica. Para artifacts nativos medianos con ramas/grupos o
-grandes, si `desktop_preview` está disponible, abre el HTML una vez en el panel
-lateral; los pequeños y los pipelines lineales permanecen inline. En CLI o si
-el preview falla, se conserva la ruta del HTML. El router solo devuelve la
-preferencia y nunca depende de Hermes Desktop. Si una herramienta binaria
-opcional no está disponible, puede enlazar el source Mermaid/DOT correspondiente.
+abre Hermes desde la raíz y pide una explicación visual. Artifacts pequeños y
+medianos se muestran inline; solo los grandes o muy densos prefieren el panel
+lateral. En CLI o si `desktop_preview` no está disponible, se devuelve la ruta
+del HTML. `study-concept-diagrams`, `visual-explain` y
+`native-visual-artifacts` se conservan como punteros legacy, no como rutas
+alternativas.
 
 ## Tests
 
@@ -214,7 +215,8 @@ Graphviz se omiten si `dot` no está instalado; el caso de PNG verifica el error
 no está instalado. Los demás tests usan bases SQLite temporales y no dependen de
 materiales personales.
 
-El renderer nativo V2 cubre flows, procesos y pipelines acíclicos. Las
+Los backends especializados cubren flows, procesos, pipelines, arquitecturas,
+roadmaps y visuales matemáticas. Las
 arquitecturas usan Graphviz y admiten ciclos. Roadmap V1 cubre rutas de
 aprendizaje con camino principal, etapas y ramas. Árboles y grafos generales
 usan Graphviz. Los demás renderers siguen disponibles

@@ -1,4 +1,4 @@
-"""Wrap rendered visual assets in a portable, standalone HTML page."""
+"""Legacy compatibility wrapper for rendered assets; route authoring centrally."""
 
 from datetime import datetime, timezone
 from html import escape
@@ -91,6 +91,7 @@ def _slug(value):
 
 
 _CSS = """
+/* Shared visual guidance: repository DESIGN.md. */
 :root{color-scheme:light dark;--bg:#f4f5f7;--card:#fff;--text:#20242b;--muted:#626b78;--line:#e3e6eb}
 @media(prefers-color-scheme:dark){:root{--bg:#17191d;--card:#22252b;--text:#edf0f4;--muted:#aeb6c2;--line:#383d46}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,sans-serif}main{max-width:960px;margin:clamp(20px,6vw,72px) auto;padding:clamp(20px,5vw,56px);background:var(--card);border:1px solid var(--line);border-radius:18px}h1{line-height:1.2;font-size:clamp(2rem,5vw,3rem)}h2{font-size:1.2rem}.subtitle{font-size:1.25rem;color:var(--muted)}.description,footer,figcaption{color:var(--muted)}figure{margin:32px 0}.visual{display:block;width:100%;height:auto;max-height:75vh;object-fit:contain}.visual svg{width:100%;height:auto}figcaption{margin-top:10px}section{border-top:1px solid var(--line);padding-top:16px}footer{margin-top:28px}

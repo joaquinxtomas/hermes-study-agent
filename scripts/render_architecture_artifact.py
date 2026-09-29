@@ -1,4 +1,4 @@
-"""Standalone architecture maps laid out by Graphviz, with readable HTML details."""
+"""Compatibility architecture backend; authoring routes through study-concept-diagrams."""
 
 from html import escape
 import json
@@ -134,6 +134,7 @@ def render(spec, path, output_dir):
 
 
 _CSS = """
+/* Shared visual guidance: repository DESIGN.md. */
 :root{color-scheme:dark;background:#090f1b;color:#f8fafc;font:15px/1.5 system-ui,sans-serif}*{box-sizing:border-box}body{margin:0}main{container-type:inline-size;max-width:1600px;margin:auto;padding:clamp(16px,3vw,36px)}header{max-width:860px;margin:0 auto 24px}.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;color:#67e8f9}h1{font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.15;letter-spacing:-.03em;margin:8px 0}.subtitle,.description{color:#cbd5e1;margin:8px 0}.diagram{background:#111c2b;border:1px solid #334155;border-radius:18px;padding:clamp(10px,2vw,24px)}.diagram svg{display:block;width:100%;height:auto;max-width:1250px;margin:auto}.diagram .wide{display:none}.diagram .node a{cursor:pointer}.diagram .node:hover polygon,.diagram .node:hover path{stroke-width:2.6}.groups,.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}.groups{margin:18px 0}.group,.card,.relations,.notes{background:#111c2b;border:1px solid #334155;border-radius:12px;padding:16px}.group h2{font-size:.95rem;margin:0 0 5px;color:#67e8f9}.group p{font-size:.82rem;color:#cbd5e1;margin:0}.components{margin-top:24px}.components>h2{font-size:1.1rem}.card{border-top:3px solid var(--role-color);scroll-margin:20px}.card:target{outline:3px solid var(--role-color)}.role{color:var(--role-color);font-size:.68rem;font-weight:700;letter-spacing:.12em}.card h3{font-size:1rem;margin:6px 0}.card p{font-size:.86rem;color:#cbd5e1;margin:7px 0}.card a{color:#8be9e0}.card dl{border-top:1px solid #334155;padding-top:8px;font-size:.8rem}.card dl div{display:flex;gap:6px;flex-wrap:wrap}.card dt{color:#94a3b8}.card dd{margin:0}.relations,.notes{margin:20px 0}.relations summary{cursor:pointer;color:#8be9e0}.relations ul,.notes ul{margin:8px 0 0;padding-left:20px}.notes h2{font-size:1rem;margin:0}footer{color:#94a3b8;font-size:.8rem;margin:24px 0}a:focus-visible,summary:focus-visible{outline:2px solid #67e8f9;outline-offset:3px}
 @container(min-width:1050px){.diagram .compact{display:none}.diagram .wide{display:block}}
 @container(max-width:520px){.diagram{display:none}.components{margin-top:18px}.components>h2::after{content:' · mapa compacto';font-size:.8rem;color:#94a3b8;font-weight:400}.cards{grid-template-columns:1fr}}

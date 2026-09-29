@@ -62,7 +62,7 @@ class RoadmapTests(unittest.TestCase):
                 medium = visual_router.render_request(visual_router.VisualRequest.from_dict(fixture("b_physics")))
                 large = visual_router.render_request(visual_router.VisualRequest.from_dict(fixture("c_data_engineering")))
             self.assertEqual([(item["complexity"], item["preferred_presentation"]) for item in (small, medium, large)],
-                             [("small", "inline"), ("medium", "expanded"), ("large", "expanded")])
+                             [("small", "inline"), ("medium", "inline"), ("large", "expanded")])
             self.assertEqual(large["renderer"], "native-roadmap")
             html = (Path(folder) / large["presentation_artifact"]).read_text()
             self.assertEqual(html.count('class="roadmap-view'), 5)
